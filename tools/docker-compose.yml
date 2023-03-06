@@ -1,0 +1,36 @@
+version: '3'
+
+networks:
+  network:
+
+volumes:
+  sprinter-mysql:
+  sprinter-redis:
+
+services:
+  mysql:
+    container_name: sprinter-mysql
+    image: ubuntu/mysql:edge
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --explicit_defaults_for_timestamp=1
+    networks:
+      - network
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_DATABASE=sprinter
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=sprinter
+      - TZ=UTC
+    volumes:
+      - sprinter-mysql:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d
+  redis:
+    container_name: sprinter-redis
+    image: redis:4-alpine
+    networks:
+      - network
+    ports:
+      - 6379:6379
+    volumes:
+      - sprinter-redis:/data
