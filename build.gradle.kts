@@ -101,7 +101,7 @@ tasks.withType<Test> {
 
 jib {
     from {
-        image = "cimg/openjdk:17.0"
+        image = "eclipse-temurin:17.0.6_10-jdk-jammy"
     }
     to {
         image = "sprinter-be"
