@@ -104,7 +104,7 @@ jib {
         image = "cimg/openjdk:17.0"
     }
     to {
-        image = "peerfund/backend"
+        image = "sprinter-be"
         tags = mutableSetOf("latest")
     }
     container {
@@ -121,7 +121,7 @@ querydsl {
 }
 
 flyway {
-    url = "jdbc:mysql://localhost:3306/peerfund?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=UTC"
+    url = "jdbc:mysql://localhost:3306/sprinter?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=UTC"
     user = "root"
     password = "root"
 }
