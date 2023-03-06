@@ -1,0 +1,45 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Query {
+    getMember(member_id: ID!): MemberResponse!
+    getAllMemberList: [MemberResponse!]!
+    getQueryUserAuth: Boolean!
+    getQueryAdminAuth: Boolean!
+    getQueryAnonymousAuth: Boolean!
+    getQueryAnonymous2Auth: Boolean!
+}
+
+type MemberResponse {
+    id: ID!
+    username: String!
+    password: String!
+    profile_name: String!
+    role_list_string: String!
+    auditor: String!
+}
+
+type Mutation {
+    createMember(input: CreateMemberInput!): ID!
+    updateProfileName(input: UpdateProfileNameInput!): ID!
+}
+
+input CreateMemberInput {
+    username: String!
+    password: String!
+    profile_name: String!
+    auditor: String
+}
+
+input UpdateProfileNameInput {
+    id: ID!
+    new_profile_name: String!
+    auditor: String!
+}
+
+input LoginInput {
+    username: String!
+    password: String!
+}
