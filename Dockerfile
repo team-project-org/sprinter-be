@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17.0.6_10-jdk-jammy AS builder
+FROM arm64v8/eclipse-temurin:17.0.6_10-jdk-jammy AS builder
 
 ENV WORK /workspace
 COPY build.gradle.kts settings.gradle.kts gradlew $WORK/
@@ -10,7 +10,7 @@ WORKDIR $WORK
 RUN dos2unix gradlew
 RUN ./gradlew clean bootJar --parallel -x test --no-daemon
 
-FROM eclipse-temurin:17.0.6_10-jdk-jammy
+FROM arm64v8/eclipse-temurin:17.0.6_10-jdk-jammy
 
 MAINTAINER dnstlr2933@gmail.com
 

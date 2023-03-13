@@ -61,6 +61,7 @@ dependencies {
 
     // DB, FLYWAY
     implementation("org.flywaydb:flyway-core")
+    implementation("org.flywaydb:flyway-mysql")
     compileOnly("org.flywaydb:flyway-mysql")
     runtimeOnly("com.h2database:h2")
     runtimeOnly("com.mysql:mysql-connector-j")
@@ -101,10 +102,10 @@ tasks.withType<Test> {
 
 jib {
     from {
-        image = "eclipse-temurin:17.0.6_10-jdk-jammy"
+        image = "arm64v8/eclipse-temurin:17.0.6_10-jdk-jammy"
     }
     to {
-        image = "sprinter-be"
+        image = "dnstlr2933/sprinter"
         tags = mutableSetOf("latest")
     }
     container {
@@ -123,12 +124,11 @@ querydsl {
 flyway {
     url = "jdbc:mysql://localhost:3306/sprinter?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=UTC"
     user = "root"
-    password = "root"
+    password = "sprinter"
 }
 
 tasks.withType<com.netflix.graphql.dgs.codegen.gradle.GenerateJavaTask> {
     schemaPaths = mutableListOf("${projectDir}/src/main/resources/schema/schema.graphqls")
-//    packageName = "hackathon.peerfund.generated"
     generateDataTypes = true
     snakeCaseConstantNames = true
     language = "kotlin"
