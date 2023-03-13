@@ -11,7 +11,7 @@ import kotlin.reflect.full.memberProperties
 @Component
 @Aspect
 class AuditorAspect {
-    @Before("execution(* hackathon.peerfund.*.*.*Fetcher.*(..)) &&" + "args(input)")
+    @Before("execution(* hackathon.sprinter.*.*.*Fetcher.*(..)) &&" + "args(input)")
     fun setAuditor(input: Any) {
         val req: HttpServletRequest = (RequestContextHolder.getRequestAttributes() as ServletRequestAttributes).request
         val auditor = input.javaClass.kotlin.memberProperties.find { it.name == "auditor" }?.get(input) as String?

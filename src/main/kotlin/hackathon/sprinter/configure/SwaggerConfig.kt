@@ -16,7 +16,7 @@ class SwaggerConfig {
         return Docket(DocumentationType.SWAGGER_2)
             .apiInfo(swaggerInfo())
             .select()
-            .apis(RequestHandlerSelectors.basePackage("hackathon.peerfund"))
+            .apis(RequestHandlerSelectors.basePackage("hackathon.sprinter"))
             .paths(PathSelectors.any())
             .build()
             .useDefaultResponseMessages(false)
