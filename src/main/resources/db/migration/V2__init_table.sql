@@ -1,4 +1,4 @@
-CREATE TABLE sprinter.member
+CREATE TABLE IF NOT EXISTS sprinter.member
 (
     id                  BIGINT          NOT NULL AUTO_INCREMENT,
     username            VARCHAR(255)    NOT NULL comment '유저 계정',
@@ -15,7 +15,7 @@ CREATE TABLE sprinter.member
     DEFAULT CHARSET=utf8mb4
     comment='회원 테이블';
 
-CREATE TABLE sprinter.role (
+CREATE TABLE IF NOT EXISTS sprinter.role (
     id          BIGINT          NOT NULL AUTO_INCREMENT,
     role_type   VARCHAR(255)    NOT NULL,
     PRIMARY KEY (`id`),
@@ -24,9 +24,14 @@ CREATE TABLE sprinter.role (
     DEFAULT CHARSET=utf8mb4
     comment='권한 테이블';
 
+INSERT INTO sprinter.role(role_type)
+SELECT * FROM (SELECT 'ROLE_USER' as roleType) AS tmp
+WHERE NOT EXISTS (
+    SELECT * FROM sprinter.role WHERE roleType = 'ROLE_USER'
+) LIMIT 1;
 
-
-INSERT IGNORE INTO sprinter.role(role_type)
-VALUES  ('ROLE_USER'),
-        ('ROLE_ADMIN')
-;
+INSERT INTO sprinter.role(role_type)
+SELECT * FROM (SELECT 'ROLE_ADMIN' as roleType) AS tmp
+WHERE NOT EXISTS (
+    SELECT * FROM sprinter.role WHERE roleType = 'ROLE_ADMIN'
+) LIMIT 1;

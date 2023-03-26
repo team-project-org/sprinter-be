@@ -1,0 +1,10 @@
+spring:
+  config:
+    import: application-common_private.yml, application-production_private.yml
+  datasource:
+    url: jdbc:mysql://mysql-154c9a82-sprinter.aivencloud.com:20271/sprinter?ssl-mode=REQUIRED&serverTimezone=UTC&characterEncoding=UTF-8
+    username: avnadmin
+
+  flyway:
+    url: jdbc:mysql://mysql-154c9a82-sprinter.aivencloud.com:20271/sprinter?ssl-mode=REQUIRED&serverTimezone=UTC&characterEncoding=UTF-8
+    user: avnadmin

@@ -1,5 +1,6 @@
 package hackathon.sprinter.jwt.service
 
+import hackathon.sprinter.jwt.authenticationfilter.JwtExceptionResponse
 import hackathon.sprinter.jwt.config.JwtConfig
 import hackathon.sprinter.member.model.Member
 import hackathon.sprinter.member.service.MemberService
@@ -12,8 +13,11 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import net.minidev.json.JSONObject
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.util.StringUtils
+import java.util.*
 import javax.crypto.SecretKey
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -21,15 +25,14 @@ import javax.servlet.http.HttpServletResponse
 @Service
 class JwtProviderService(
     private val memberService: MemberService
-) : JwtProviderServiceInterface {
-
+) {
     @Value("\${jwt.secret-key}")
     private val secretValue: String? = null
     private fun getSecretKey(): SecretKey = Keys.hmacShaKeyFor(secretValue!!.encodeToByteArray())
     private fun getParser(): JwtParser = Jwts.parserBuilder().setSigningKey(getSecretKey()).build()
-    private fun parseToken(token: String) = getParser().parseClaimsJws(token).body
+    private fun parseToken(token: String) = getParser().parseClaimsJws(token)
 
-    override fun createAccessToken(username: String): String {
+    fun createAccessToken(username: String): String {
         return Jwts
             .builder()
             .setSubject(JwtConfig.ACCESS)
@@ -40,7 +43,7 @@ class JwtProviderService(
             .compact()
     }
 
-    override fun createRefreshToken(): String {
+    fun createRefreshToken(): String {
         return Jwts
             .builder()
             .setSubject(JwtConfig.REFRESH)
@@ -50,43 +53,38 @@ class JwtProviderService(
             .compact()
     }
 
-    override fun extractRefreshToken(request: HttpServletRequest): String {
-        return request
-            .getHeader(JwtConfig.REFRESH_TOKEN_HEADER)
-            .replace(JwtConfig.TOKEN_PREFIX, "")
+    fun onlyAccessToken(request: HttpServletRequest): Boolean {
+        return StringUtils.hasText(request.getHeader(JwtConfig.ACCESS_TOKEN_HEADER)) &&
+                StringUtils.hasText(request.getHeader(JwtConfig.REFRESH_TOKEN_HEADER)).not()
     }
 
-    override fun extractAccessToken(request: HttpServletRequest): String {
-        return request
-            .getHeader(JwtConfig.REFRESH_TOKEN_HEADER)
-            .replace(JwtConfig.TOKEN_PREFIX, "")
-    }
-
-    override fun checkExpiredToken(token: String): Boolean {
-        return try {
-            parseToken(token)
-            false
-        } catch (e: ExpiredJwtException) {
-            true
-        } catch (e: Exception) {
-            throw e
-        }
-    }
-
-    override fun checkExpireInSevenDayToken(token: String): Boolean {
-        return parseToken(token).expiration.before(plusKSTDate(day = 7))
-    }
-
-    override fun checkValidHeader(request: HttpServletRequest): Boolean {
+    fun checkValidAccessHeader(request: HttpServletRequest): Boolean {
         request
-            .also { it.getHeader(JwtConfig.REFRESH_TOKEN_HEADER)?.startsWith(JwtConfig.TOKEN_PREFIX) ?: return false }
-            .also { it.getHeader(JwtConfig.ACCESS_TOKEN_HEADER)?.startsWith(JwtConfig.TOKEN_PREFIX) ?: return false }
+            .apply { getHeader(JwtConfig.ACCESS_TOKEN_HEADER)?.startsWith(JwtConfig.TOKEN_PREFIX) ?: return false }
         return true
     }
 
-    override fun checkValidToken(token: String): Boolean {
+    fun checkValidRefreshHeader(request: HttpServletRequest): Boolean {
+        request
+            .apply { getHeader(JwtConfig.REFRESH_TOKEN_HEADER)?.startsWith(JwtConfig.TOKEN_PREFIX) ?: return false }
+        return true
+    }
+
+    fun extractAccessToken(request: HttpServletRequest): String {
+        return request
+            .getHeader(JwtConfig.ACCESS_TOKEN_HEADER)
+            .replace(JwtConfig.TOKEN_PREFIX, "")
+    }
+
+    fun extractRefreshToken(request: HttpServletRequest): String {
+        return request
+            .getHeader(JwtConfig.REFRESH_TOKEN_HEADER)
+            .replace(JwtConfig.TOKEN_PREFIX, "")
+    }
+
+    fun checkValidToken(token: String): Boolean {
         return try {
-            parseToken(token)
+            parseToken(token).body
             true
         } catch (e: ExpiredJwtException) {
             true
@@ -95,23 +93,40 @@ class JwtProviderService(
         }
     }
 
-    override fun findMemberByToken(token: String): Member {
-        return memberService.findMemberByToken(token)
+    fun checkTokenExpired(token: String): Boolean {
+        return try {
+            parseToken(token).body
+            false
+        } catch (e: ExpiredJwtException) {
+            throw e
+        }
     }
 
-    override fun findMemberByUsername(username: String): Member {
-        return memberService.findMemberByUsername(username)
+    fun checkExpireInSevenDayToken(token: String): Boolean {
+        return parseToken(token).body.expiration.before(plusKSTDate(day = 7))
+    }
+
+    fun getUsername(token: String): String {
+        return parseToken(token).body[JwtConfig.USERNAME].toString()
+    }
+
+    fun findMemberByRefreshToken(refreshToken: String): Member {
+        return memberService.findMemberByToken(refreshToken)
+    }
+
+    fun findMemberByAccessToken(accessToken: String): Member {
+        return memberService.findMemberByUsername(getUsername(accessToken))
     }
 
     @Transactional
-    override fun saveRefreshToken(username: String, token: String) {
+    fun saveRefreshToken(username: String, token: String) {
         memberService
             .findMemberByUsername(username)
             .updateToken(token)
     }
 
     @Transactional
-    override fun reissueRefreshToken(username: String): String {
+    fun reissueRefreshToken(username: String): String {
         val reissuedRefreshToken = createRefreshToken()
         memberService
             .findMemberByUsername(username)
@@ -120,7 +135,7 @@ class JwtProviderService(
 
     }
 
-    override fun setResponseMessage(result: Boolean, response: HttpServletResponse, message: String) {
+    fun setResponseMessage(result: Boolean, response: HttpServletResponse, message: String) {
         response.contentType = "application/json;charset=UTF-8"
         val content = JSONObject()
             .apply { put("success", result) }
@@ -136,5 +151,11 @@ class JwtProviderService(
 
     fun setHeaderOfRefreshToken(response: HttpServletResponse, token: String) {
         response.addHeader(JwtConfig.REFRESH_TOKEN_HEADER, JwtConfig.TOKEN_PREFIX + token)
+    }
+
+    fun setErrorResponseMessage(response: HttpServletResponse, status: HttpStatus, errorType: String, message: String) {
+        response.status = status.value()
+        response.contentType = "application/json; charset=UTF-8"
+        response.writer.write(JwtExceptionResponse(status, "$errorType: $message").toJsonString())
     }
 }
