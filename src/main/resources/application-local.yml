@@ -1,3 +1,38 @@
 spring:
-  config:
-    import: application-common_private.yml
+  graphql:
+    graphiql.enabled: true
+    schema.printer.enabled: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/sprinter?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: sprinter
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      org:
+        hibernate:
+          format_sql: true
+          envers:
+            revision_field_name: rev_id
+            audit_table_suffix: _histories
+            modified_flag_suffix: _modified
+            store_data_at_delete: true
+
+  flyway:
+    baseline-on-migrate: true
+    url: jdbc:mysql://127.0.0.1:3306/sprinter?serverTimezone=UTC&characterEncoding=UTF-8
+    baseline-version: 1
+    user: root
+    password: sprinter
+
+logging.level:
+  org.hibernate.SQL: debug
