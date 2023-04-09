@@ -8,4 +8,5 @@ class SprinterApplication
 
 fun main(args: Array<String>) {
 	runApplication<SprinterApplication>(*args)
+	println(System.getenv())
 }

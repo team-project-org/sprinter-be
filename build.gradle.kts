@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.ir.backend.js.transformers.irToJs.argumentsWithVarargAsSingleArray
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -121,7 +122,11 @@ jib {
         tags = mutableSetOf("v0.0.1")
     }
     container {
-        jvmFlags = mutableListOf("-Xms2048m", "-Xmx2048m")
+        jvmFlags = mutableListOf(
+            "-Xms2048m",
+            "-Xmx2048m",
+            "-Dspring.profiles.active=${System.getenv("PROFILE")}"
+        )
         ports = listOf("9090")
     }
 }
@@ -135,16 +140,16 @@ querydsl {
 }
 
 flyway {
-    val prodUrl = "mysql-154c9a82-sprinter.aivencloud.com:20271"
-    val prodUser = "avnadmin"
-    val prodPassword = ""
-
-    val defaultUrl = "127.0.0.1:3306"
+    val defaultUrl = "127.0.0.1"
     val defaultUser = "root"
     val defaultPassword = "sprinter"
-    url = "jdbc:mysql://${defaultUrl}/sprinter?ssl-mode=REQUIRED&serverTimezone=UTC&characterEncoding=UTF-8"
-    user = defaultUser
-    password = defaultPassword
+    val prodUrl = System.getenv("DB_URL") ?: defaultUrl
+    val prodUser = System.getenv("DB_USER") ?: defaultUser
+    val prodPassword = System.getenv("DB_PASSWORD") ?: defaultPassword
+
+    url = "jdbc:mysql://${prodUrl}:3306/sprinter"
+    user = prodUser
+    password = prodPassword
 }
 
 tasks.withType<com.netflix.graphql.dgs.codegen.gradle.GenerateJavaTask> {

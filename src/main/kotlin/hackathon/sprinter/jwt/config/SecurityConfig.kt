@@ -48,9 +48,6 @@ class SecurityConfig(
                     "/api/v1/signUp",
                     "/playground",
                 )
-            it.ignoring()
-                .antMatchers("/api/v1/signUp") // 회원가입 필터 제외
-                .antMatchers("/playground")
         }
     }
 
@@ -71,8 +68,8 @@ class SecurityConfig(
             .addFilterBefore(CustomJwtAuthorizationFilter(jwtProviderService), BasicAuthenticationFilter::class.java)
             .addFilterBefore(JwtAuthorizationExceptionFilter(jwtProviderService), CustomJwtAuthorizationFilter::class.java)
             .authorizeRequests()
-            .antMatchers("/graphql").permitAll()
-            .antMatchers("/graphiql").permitAll()
+            .antMatchers("/graphql").authenticated()
+            .antMatchers("/graphiql").authenticated()
             .anyRequest().permitAll()
 
             // 인증,인가 exception handling 시 커스텀 파일로 처리

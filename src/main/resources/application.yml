@@ -37,6 +37,5 @@ spring:
     baseline-version: 1
     user: root
     password: sprinter
-
-  profiles:
-    active: local
+jwt:
+  secret-key: this_is_local_secret_key
