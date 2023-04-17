@@ -2,10 +2,6 @@ server:
   port: 9090
 
 spring:
-  h2:
-    console:
-      enabled: true
-
   graphql:
     graphiql.enabled: true
     schema.printer.enabled: true
@@ -28,11 +24,6 @@ spring:
       org:
         hibernate:
           format_sql: true
-          envers:
-            revision_field_name: rev_id
-            audit_table_suffix: _histories
-            modified_flag_suffix: _modified
-            store_data_at_delete: true
       hibernate:
         default_batch_fetch_size: 100
         show_sql: false
@@ -49,6 +40,3 @@ spring:
 
   profiles:
     active: local
-
-logging.level:
-  org.hibernate.SQL: debug
