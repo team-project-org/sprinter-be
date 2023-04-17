@@ -25,7 +25,7 @@ COPY --from=builder ${JAR_FILE} app.jar
 ENTRYPOINT [
     "java",
     "-jar",
-    "/app.jar",
     "-Dspring.profiles.active=prod",
-    "-Dspring-boot.run.arguments=--spring.datasource.url=${SPRING_DATASOURCE_URL}, --spring.datasource.username=${SPRING_DATASOURCE_USERNAME}, --spring.datasource.password=${SPRING_DATASOURCE_PASSWORD}, --spring.flyway.url=${SPRING_DATASOURCE_URL}, --spring.flyway.user=${SPRING_DATASOURCE_USERNAME}, --spring.flyway.password=${SPRING_DATASOURCE_PASSWORD}"
+    "-Dspring-boot.run.arguments=--spring.datasource.url=${SPRING_DATASOURCE_URL}, --spring.datasource.username=${SPRING_DATASOURCE_USERNAME}, --spring.datasource.password=${SPRING_DATASOURCE_PASSWORD}, --spring.flyway.url=${SPRING_DATASOURCE_URL}, --spring.flyway.user=${SPRING_DATASOURCE_USERNAME}, --spring.flyway.password=${SPRING_DATASOURCE_PASSWORD}",
+    "/app.jar"
 ]
