@@ -15,9 +15,9 @@ FROM openjdk:20-ea-17-oraclelinux8
 
 MAINTAINER dnstlr2933@gmail.com
 
-ENV SPRING_DATASOURCE_URL $SPRING_DATASOURCE_URL
-ENV SPRING_DATASOURCE_USERNAME $SPRING_DATASOURCE_USERNAME
-ENV SPRING_DATASOURCE_PASSWORD $SPRING_DATASOURCE_PASSWORD
+ENV DB_URL $DB_URL
+ENV DB_USERNAME $DB_USERNAME
+ENV DB_PASSWORD $DB_PASSWORD
 
 ARG JAR_FILE=workspace/build/libs/*.jar
 COPY --from=builder ${JAR_FILE} app.jar
@@ -25,6 +25,6 @@ COPY --from=builder ${JAR_FILE} app.jar
 ENTRYPOINT ["java", \
             "-jar", \
             "-Dspring.profiles.active=prod", \
-            "-Dspring-boot.run.arguments=--spring.datasource.url=${SPRING_DATASOURCE_URL}, --spring.datasource.username=${SPRING_DATASOURCE_USERNAME}, --spring.datasource.password=${SPRING_DATASOURCE_PASSWORD}, --spring.flyway.url=${SPRING_DATASOURCE_URL}, --spring.flyway.user=${SPRING_DATASOURCE_USERNAME}, --spring.flyway.password=${SPRING_DATASOURCE_PASSWORD}", \
+            "-Dspring-boot.run.arguments=--spring.datasource.url=jdbc:mysql://${DB_URL}:3306/sprinter?serverTimezone=UTC&characterEncoding=UTF-8, --spring.datasource.username=${DB_USERNAME}, --spring.datasource.password=${DB_PASSWORD}", \
             "/app.jar" \
 ]
