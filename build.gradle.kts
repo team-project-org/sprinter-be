@@ -1,4 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.ir.backend.js.transformers.irToJs.argumentsWithVarargAsSingleArray
+import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     id("org.springframework.boot") version "2.7.8"
@@ -102,14 +105,29 @@ tasks.withType<Test> {
 
 jib {
     from {
-        image = "arm64v8/eclipse-temurin:17.0.6_10-jdk-jammy"
+        image = "openjdk:20-ea-17-oraclelinux8"
+        platforms {
+            platform {
+                architecture = "arm64"
+                os = "linux"
+            }
+            platform {
+                architecture = "amd64"
+                os = "linux"
+            }
+        }
     }
     to {
         image = "dnstlr2933/sprinter"
-        tags = mutableSetOf("latest")
+        tags = mutableSetOf("v0.0.1")
     }
     container {
-        jvmFlags = mutableListOf("-Xms2048m", "-Xmx2048m")
+        jvmFlags = mutableListOf(
+            "-Xms2048m",
+            "-Xmx2048m",
+            "-Dspring.profiles.active=${System.getenv("PROFILE")}"
+        )
+        ports = listOf("9090")
     }
 }
 
@@ -122,9 +140,16 @@ querydsl {
 }
 
 flyway {
-    url = "jdbc:mysql://localhost:3306/sprinter?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=UTC"
-    user = "root"
-    password = "sprinter"
+    val defaultUrl = "127.0.0.1"
+    val defaultUser = "root"
+    val defaultPassword = "sprinter"
+    val prodUrl = System.getenv("DB_URL") ?: defaultUrl
+    val prodUser = System.getenv("DB_USER") ?: defaultUser
+    val prodPassword = System.getenv("DB_PASSWORD") ?: defaultPassword
+
+    url = "jdbc:mysql://${prodUrl}:3306/sprinter"
+    user = prodUser
+    password = prodPassword
 }
 
 tasks.withType<com.netflix.graphql.dgs.codegen.gradle.GenerateJavaTask> {

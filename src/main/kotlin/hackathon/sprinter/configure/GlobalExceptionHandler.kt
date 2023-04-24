@@ -14,9 +14,9 @@ class GlobalExceptionHandler {
     private val logger = LoggerFactory.getLogger(this::class.simpleName)
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(CustomRuntimeException::class)
+    @ExceptionHandler(CustomClientException::class)
     fun handleCustomException(
-        ex: CustomRuntimeException,
+        ex: CustomClientException,
         request: HttpServletRequest,
     ): ResponseEntity<ErrorResponse> {
         logger.error(

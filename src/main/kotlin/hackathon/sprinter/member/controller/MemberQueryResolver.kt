@@ -12,7 +12,7 @@ import hackathon.sprinter.member.service.MemberService
 import org.springframework.security.access.prepost.PreAuthorize
 
 @DgsComponent
-class MemberFetcher(
+class MemberQueryResolver(
     private val memberService: MemberService,
 ) {
     @DgsQuery
@@ -50,20 +50,5 @@ class MemberFetcher(
     @DgsQuery
     fun getAllMemberList(): List<MemberResponse> {
         return memberService.findAllMember()
-    }
-
-    @DgsMutation
-    fun createMember(
-        @InputArgument input: CreateMemberInput
-    ): Long {
-        return memberService.create(input)
-    }
-
-    @DgsMutation
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    fun updateProfileName(
-        @InputArgument input: UpdateProfileNameInput
-    ): Long {
-        return memberService.updateProfileName(input)
     }
 }
