@@ -103,34 +103,6 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-jib {
-    from {
-        image = "openjdk:20-ea-17-oraclelinux8"
-        platforms {
-            platform {
-                architecture = "arm64"
-                os = "linux"
-            }
-            platform {
-                architecture = "amd64"
-                os = "linux"
-            }
-        }
-    }
-    to {
-        image = "dnstlr2933/sprinter"
-        tags = mutableSetOf("v0.0.1")
-    }
-    container {
-        jvmFlags = mutableListOf(
-            "-Xms2048m",
-            "-Xmx2048m",
-            "-Dspring.profiles.active=${System.getenv("PROFILE")}"
-        )
-        ports = listOf("9090")
-    }
-}
-
 val querydslDir = "$buildDir/generated/querydsl"
 
 querydsl {

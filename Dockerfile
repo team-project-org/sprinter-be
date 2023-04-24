@@ -1,4 +1,4 @@
-FROM openjdk:20-ea-17-oraclelinux8 AS builder
+FROM bitnami/java:17-debian-11 AS builder
 
 ENV WORK /workspace
 COPY build.gradle.kts settings.gradle.kts gradlew $WORK/
@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y dos2unix
 RUN dos2unix gradlew
 RUN ./gradlew clean bootJar --parallel -x test --no-daemon
 
-FROM openjdk:20-ea-17-oraclelinux8
+FROM bitnami/java:17-debian-11
 
 MAINTAINER dnstlr2933@gmail.com
 
