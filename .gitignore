@@ -37,3 +37,4 @@ out/
 .vscode/
 
 src/main/resources/application-common_private.yml
+src/main/resources/application-production_private.yml

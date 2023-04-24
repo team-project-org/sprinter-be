@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: application-common_private.yml, application-production_private.yml
   datasource:
     url: ${DB_URL}
     username: ${DB_USER}
