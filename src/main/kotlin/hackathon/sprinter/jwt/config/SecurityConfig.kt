@@ -46,6 +46,7 @@ class SecurityConfig(
                     "/swagger/**",
                     "/webjars/**",
                     "/api/v1/signUp",
+                    "/hello",
                     "/playground",
                 )
         }
@@ -68,8 +69,8 @@ class SecurityConfig(
             .addFilterBefore(CustomJwtAuthorizationFilter(jwtProviderService), BasicAuthenticationFilter::class.java)
             .addFilterBefore(JwtAuthorizationExceptionFilter(jwtProviderService), CustomJwtAuthorizationFilter::class.java)
             .authorizeRequests()
-            .antMatchers("/graphql").authenticated()
-            .antMatchers("/graphiql").authenticated()
+            .antMatchers("/graphql").permitAll()
+            .antMatchers("/graphiql").permitAll()
             .anyRequest().permitAll()
 
             // 인증,인가 exception handling 시 커스텀 파일로 처리

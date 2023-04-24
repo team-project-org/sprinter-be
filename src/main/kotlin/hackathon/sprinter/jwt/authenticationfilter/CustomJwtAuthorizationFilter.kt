@@ -31,13 +31,15 @@ class CustomJwtAuthorizationFilter(
             request
                 .apply {
                     if (checkValidHeader().not()) {
-                        jwtProviderService.setErrorResponseMessage(
-                            response = response,
-                            status = HttpStatus.BAD_REQUEST,
-                            errorType = JwtConfig.HEADER_EXCEPTION,
-                            message = "잘못된 헤더입니다."
-                        )
+                        filterChain.doFilter(request, response)
                         return
+//                        jwtProviderService.setErrorResponseMessage(
+//                            response = response,
+//                            status = HttpStatus.BAD_REQUEST,
+//                            errorType = JwtConfig.HEADER_EXCEPTION,
+//                            message = "잘못된 헤더입니다."
+//                        )
+//                        return
                     }
                 }
                 .let {
