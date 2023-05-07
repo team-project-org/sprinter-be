@@ -32,6 +32,7 @@ class CustomJwtAuthorizationFilter(
                 .apply {
                     if (checkValidHeader().not()) {
                         filterChain.doFilter(request, response)
+                        log.info("anonymous pass")
                         return
 //                        jwtProviderService.setErrorResponseMessage(
 //                            response = response,
