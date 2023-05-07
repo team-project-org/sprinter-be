@@ -40,7 +40,7 @@ class MemberQueryResolver(
     }
 
     @DgsQuery
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'ANONYMOUS')")
     fun getMember(
         @InputArgument(name = "member_id") memberId: ID
     ): MemberResponse {

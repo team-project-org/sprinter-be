@@ -30,7 +30,7 @@ class JwtAuthorizationExceptionFilter(
         }
     }
 
-    fun setErrorResponse(res: HttpServletResponse, status: HttpStatus, errorType: String, ex: Throwable) {
+    private fun setErrorResponse(res: HttpServletResponse, status: HttpStatus, errorType: String, ex: Throwable) {
         jwtProviderService.setErrorResponseMessage(res, status, errorType, ex.message ?: "")
     }
 }
