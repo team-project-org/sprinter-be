@@ -19,6 +19,10 @@ ENV DB_URL $DB_URL
 ENV DB_USERNAME $DB_USERNAME
 ENV DB_PASSWORD $DB_PASSWORD
 
+RUN echo ${DB_URL}
+RUN echo ${DB_USERNAME}
+RUN echo ${DB_PASSWORD}
+
 ARG JAR_FILE=workspace/build/libs/*.jar
 COPY --from=builder ${JAR_FILE} app.jar
 
