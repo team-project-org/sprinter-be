@@ -7,5 +7,6 @@ import org.springframework.boot.runApplication
 class SprinterApplication
 
 fun main(args: Array<String>) {
+	println(System.getenv())
 	runApplication<SprinterApplication>(*args)
 }
