@@ -119,7 +119,7 @@ flyway {
     val prodUser = System.getenv("DB_USER") ?: defaultUser
     val prodPassword = System.getenv("DB_PASSWORD") ?: defaultPassword
 
-    url = "jdbc:mysql://${prodUrl}:3306/sprinter"
+    url = "jdbc:mysql://${prodUrl}:3306/sprinter?serverTimezone=UTC&characterEncoding=UTF-8"
     user = prodUser
     password = prodPassword
 }
