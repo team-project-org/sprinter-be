@@ -29,6 +29,6 @@ COPY --from=builder ${JAR_FILE} app.jar
 ENTRYPOINT ["java", \
             "-jar", \
             "-Dspring.profiles.active=prod", \
-            "-Dspring-boot.run.arguments=--spring.datasource.url=jdbc:mysql://${DB_URL}:3306/sprinter?serverTimezone=UTC&characterEncoding=UTF-8, --spring.datasource.username=${DB_USERNAME}, --spring.datasource.password=${DB_PASSWORD}, -Dspring-boot.run.arguments=--flyway.url=jdbc:mysql://${DB_URL}:3306/sprinter?serverTimezone=UTC&characterEncoding=UTF-8, -Dspring-boot.run.arguments=--flyway.user=${DB_USERNAME}, -Dspring-boot.run.arguments=--flyway.password=${DB_PASSWORD}", \
+            "-Dspring-boot.run.arguments=--spring.datasource.url=jdbc:mysql://${DB_URL}:3306/sprinter?serverTimezone=UTC&characterEncoding=UTF-8, --spring.datasource.username=${DB_USERNAME}, --spring.datasource.password=${DB_PASSWORD}, -Dspring-boot.run.arguments=--spring.flyway.url=jdbc:mysql://${DB_URL}:3306/sprinter?serverTimezone=UTC&characterEncoding=UTF-8, -Dspring-boot.run.arguments=--spring.flyway.user=${DB_USERNAME}, -Dspring-boot.run.arguments=--spring.flyway.password=${DB_PASSWORD}", \
             "/app.jar" \
 ]
