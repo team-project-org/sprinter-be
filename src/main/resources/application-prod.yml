@@ -29,3 +29,5 @@ spring:
         format_sql: true
     show-sql: false
     generate-ddl: false
+  profiles:
+    active: prod
