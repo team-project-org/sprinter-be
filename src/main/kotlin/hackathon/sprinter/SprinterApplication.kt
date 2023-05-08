@@ -8,6 +8,4 @@ class SprinterApplication
 
 fun main(args: Array<String>) {
 	runApplication<SprinterApplication>(*args)
-	println(System.getenv())
-	println("DB_PASSWORD: ${System.getenv("DB_PASSWORD")}")
 }
