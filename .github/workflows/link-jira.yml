@@ -15,3 +15,7 @@ jobs:
           jira-token: '${{ secrets.JIRA_USER_EMAIL }}:${{ secrets.JIRA_API_TOKEN }}'
           jira-base-url: ${{ secrets.JIRA_BASE_URL }}
           use: both
+
+      - name: db
+        run:
+          echo ${{ secrets.DB_PASSWORD }}
