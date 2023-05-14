@@ -5,13 +5,12 @@ import java.util.Properties
 
 plugins {
     id("org.springframework.boot") version "2.7.8"
-    id("io.spring.dependency-management") version "1.0.15.RELEASE"
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
     kotlin("plugin.jpa") version "1.6.21"
     kotlin("kapt") version "1.6.10"
-    id("org.flywaydb.flyway") version "7.8.2"
-    id("com.google.cloud.tools.jib") version "3.1.2"
+//    id("org.flywaydb.flyway") version "7.7.3"
     id("com.ewerk.gradle.plugins.querydsl") version "1.0.10"
     id("com.netflix.dgs.codegen") version "5.2.0" apply true
 }
@@ -63,11 +62,8 @@ dependencies {
     implementation("io.springfox:springfox-boot-starter:${swaggerVersion}")
 
     // DB, FLYWAY
-    implementation("org.flywaydb:flyway-core")
-    implementation("org.flywaydb:flyway-mysql")
-    compileOnly("org.flywaydb:flyway-mysql")
-    runtimeOnly("com.h2database:h2")
-    runtimeOnly("com.mysql:mysql-connector-j")
+    implementation("mysql:mysql-connector-java:8.0.26")
+//    implementation("org.flywaydb:flyway-core:7.7.3")
 
     // QueryDSL
     implementation("com.querydsl:querydsl-jpa:$queryDslVersion")
@@ -111,18 +107,18 @@ querydsl {
     querydslSourcesDir = querydslDir
 }
 
-flyway {
-    val defaultUrl = "127.0.0.1"
-    val defaultUser = "root"
-    val defaultPassword = "sprinter"
-    val prodUrl = System.getenv("DB_URL") ?: defaultUrl
-    val prodUser = System.getenv("DB_USER") ?: defaultUser
-    val prodPassword = System.getenv("DB_PASSWORD") ?: defaultPassword
-
-    url = "jdbc:mysql://${prodUrl}:3306/sprinter?serverTimezone=UTC&characterEncoding=UTF-8"
-    user = prodUser
-    password = prodPassword
-}
+//flyway {
+//    val defaultUrl = "127.0.0.1"
+//    val defaultUser = "root"
+//    val defaultPassword = "sprinter"
+//    val prodUrl = System.getenv("DB_URL") ?: defaultUrl
+//    val prodUser = System.getenv("DB_USER") ?: defaultUser
+//    val prodPassword = System.getenv("DB_PASSWORD") ?: defaultPassword
+//
+//    url = "jdbc:mysql://${prodUrl}:3306/sprinter?serverTimezone=UTC&characterEncoding=UTF-8"
+//    user = prodUser
+//    password = prodPassword
+//}
 
 tasks.withType<com.netflix.graphql.dgs.codegen.gradle.GenerateJavaTask> {
     schemaPaths = mutableListOf("${projectDir}/src/main/resources/schema/schema.graphqls")

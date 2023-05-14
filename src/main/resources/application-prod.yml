@@ -12,7 +12,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     open-in-view: false
     properties:
       org:
@@ -29,3 +29,8 @@ spring:
         format_sql: true
     show-sql: false
     generate-ddl: false
+
+  config:
+    activate:
+      on-profile: prod
+    import: application-prod_private.yml
