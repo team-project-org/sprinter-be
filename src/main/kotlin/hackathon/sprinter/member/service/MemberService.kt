@@ -89,9 +89,7 @@ class MemberService(
 
     private fun doCreate(input: SignupInput): Member {
         val member = memberCreator.createMember(input)
-        val userRole = RoleType.ROLE_USER
-
-        member.addRoleType(userRole)
+        member.addRoleType(RoleType.ROLE_USER)
         return memberRepository.save(member)
     }
 

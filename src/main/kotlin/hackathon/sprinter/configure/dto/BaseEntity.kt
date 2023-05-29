@@ -13,7 +13,7 @@ import javax.persistence.MappedSuperclass
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
-@Audited(withModifiedFlag = true)
+@Audited
 class BaseEntity : BaseTimeEntity() {
     @CreatedBy
     @LastModifiedBy
@@ -22,7 +22,7 @@ class BaseEntity : BaseTimeEntity() {
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
-@Audited(withModifiedFlag = true)
+@Audited
 class BaseTimeEntity {
     @CreatedDate
     @Column(updatable = false)
