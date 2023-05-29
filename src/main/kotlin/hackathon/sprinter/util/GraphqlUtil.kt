@@ -1,7 +1,8 @@
 package hackathon.sprinter.util
 
-import com.netflix.dgs.codegen.generated.types.Member
+import com.netflix.dgs.codegen.generated.types.MemberResponse
 import com.netflix.dgs.codegen.generated.types.Post
+import hackathon.sprinter.member.model.Member
 import hackathon.sprinter.post.model.MemberDto
 import hackathon.sprinter.post.model.PostDto
 
@@ -14,16 +15,17 @@ fun PostDto.toGqlSchema(): Post {
     )
 }
 
-fun hackathon.sprinter.member.model.Member.toGqlSchema(): Member {
-    return Member(
+fun Member.toGqlSchema(): MemberResponse {
+    return MemberResponse(
         id = this.id.toString(),
         username = this.username,
         profile_name = this.profileName,
         role_type_list = this.roleList.map { it.roleType },
     )
 }
-fun MemberDto.toGqlSchema(): Member {
-    return Member(
+
+fun MemberDto.toGqlSchema(): MemberResponse {
+    return MemberResponse(
         id = this.id.toString(),
         username = this.username,
         profile_name = this.profileName,

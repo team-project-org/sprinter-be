@@ -6,8 +6,8 @@ schema {
 }
 
 type Query {
-    getMember(member_id: ID!): Member!
-    getAllMemberList: [Member!]!
+    getMember(member_id: ID!): MemberResponse!
+    getAllMemberList: [MemberResponse!]!
     getQueryUserAuth: Boolean!
     getQueryAdminAuth: Boolean!
     getQueryAnonymousAuth: Boolean!
@@ -24,10 +24,10 @@ type Post {
     title: String!
     start_date: DateTime!
     end_date: DateTime!
-    owner: Member!
+    owner: MemberResponse!
 }
 
-type Member {
+type MemberResponse {
     """ 회원 PK """
     id: ID!
     """ 회원 고유 이름 """

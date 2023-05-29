@@ -1,5 +1,6 @@
 package hackathon.sprinter.member.service
 
+import com.netflix.dgs.codegen.generated.types.MemberResponse
 import com.netflix.dgs.codegen.generated.types.SignupInput
 import com.netflix.dgs.codegen.generated.types.UpdateProfileNameInput
 import hackathon.sprinter.configure.DataNotFoundException
@@ -19,14 +20,22 @@ import java.util.regex.Pattern
 class MemberService(
     private val memberRepository: MemberRepository,
     private val memberCreator: MemberCreator,
-    private val roleService: RoleService,
 ) {
     @Transactional(readOnly = true)
-    fun findMemberById(memberId: Long): com.netflix.dgs.codegen.generated.types.Member {
+    fun findMemberById(memberId: Long): MemberResponse {
         val member = memberRepository.findMemberById(memberId)
             ?: throw DataNotFoundException(ITEM_NOT_EXIST, "회원이 존재하지 않습니다.")
 
         return member.toGqlSchema()
+    }
+
+    @Transactional(readOnly = true)
+    fun findAllMember(): List<MemberResponse> {
+        val memberList = memberRepository.findAllMember()
+        if (memberList.isEmpty()) {
+            return emptyList()
+        }
+        return memberList.map { it.toGqlSchema() }
     }
 
     @Transactional(readOnly = true)
@@ -39,15 +48,6 @@ class MemberService(
     fun findMemberByUsername(username: String): Member {
         return memberRepository.findMemberByUsername(username)
             ?: throw DataNotFoundException(ITEM_NOT_EXIST, "회원이 존재하지 않습니다.")
-    }
-
-    @Transactional(readOnly = true)
-    fun findAllMember(): List<com.netflix.dgs.codegen.generated.types.Member> {
-        val memberList = memberRepository.findAllMember()
-        if (memberList.isEmpty()) {
-            return emptyList()
-        }
-        return memberList.map { it.toGqlSchema() }
     }
 
     @Transactional
@@ -89,9 +89,9 @@ class MemberService(
 
     private fun doCreate(input: SignupInput): Member {
         val member = memberCreator.createMember(input)
-        val userRole = roleService.findRole(RoleType.ROLE_USER)
+        val userRole = RoleType.ROLE_USER
 
-        member.addRoleType(userRole.roleType)
+        member.addRoleType(userRole)
         return memberRepository.save(member)
     }
 
@@ -112,11 +112,11 @@ class MemberAssembler(
     private val memberRepository: MemberRepository
 ) {
     @Transactional
-    fun assemble(memberId: Long): com.netflix.dgs.codegen.generated.types.Member {
+    fun assemble(memberId: Long): MemberResponse {
         val member = memberRepository.findMemberById(memberId)
             ?: throw DataNotFoundException(ITEM_NOT_EXIST, "회원이 존재하지 않습니다.")
 
-        return com.netflix.dgs.codegen.generated.types.Member(
+        return MemberResponse(
             id = member.id.toString(),
             username = member.username,
             profile_name = member.profileName,
