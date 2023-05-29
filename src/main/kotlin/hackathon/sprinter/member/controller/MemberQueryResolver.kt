@@ -1,6 +1,7 @@
 package hackathon.sprinter.member.controller
 
 import com.netflix.dgs.codegen.generated.types.CreateMemberInput
+import com.netflix.dgs.codegen.generated.types.Member
 import com.netflix.dgs.codegen.generated.types.MemberResponse
 import com.netflix.dgs.codegen.generated.types.UpdateProfileNameInput
 import com.netflix.graphql.dgs.DgsComponent
@@ -43,7 +44,7 @@ class MemberQueryResolver(
     @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'ANONYMOUS')")
     fun getMember(
         @InputArgument(name = "member_id") memberId: ID
-    ): MemberResponse {
+    ): Member {
         return memberService.findMemberById(memberId.toLong())
     }
 

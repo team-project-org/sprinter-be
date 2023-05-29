@@ -48,7 +48,6 @@ class CustomUsernamePasswordAuthenticationFilter(
         chain: FilterChain?,
         authResult: Authentication?
     ) {
-        log.info("[인증 성공] JWT 발급")
         val principal: PrincipalUserDetails = authResult!!.principal as PrincipalUserDetails
 
         val accessToken: String = jwtProviderService.createAccessToken(principal.username)
@@ -60,6 +59,7 @@ class CustomUsernamePasswordAuthenticationFilter(
         jwtProviderService.setHeaderOfRefreshToken(response, refreshToken)
 
         jwtProviderService.setResponseMessage(true, response, "로그인 성공")
+        log.info("[인증 성공] JWT 발급")
     }
 
     override fun unsuccessfulAuthentication(

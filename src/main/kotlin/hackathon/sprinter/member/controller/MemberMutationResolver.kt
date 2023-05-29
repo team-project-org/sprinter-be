@@ -1,6 +1,7 @@
 package hackathon.sprinter.member.controller
 
 import com.netflix.dgs.codegen.generated.types.CreateMemberInput
+import com.netflix.dgs.codegen.generated.types.SignupInput
 import com.netflix.dgs.codegen.generated.types.UpdateProfileNameInput
 import com.netflix.graphql.dgs.DgsComponent
 import com.netflix.graphql.dgs.DgsMutation
@@ -15,7 +16,7 @@ class MemberMutationResolver(
     @DgsMutation
     @PreAuthorize("isAnonymous()")
     fun createMember(
-        @InputArgument input: CreateMemberInput
+        @InputArgument input: SignupInput
     ): Long {
         return memberService.create(input)
     }

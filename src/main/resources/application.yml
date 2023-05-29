@@ -38,4 +38,4 @@ spring:
     user: root
     password: sprinter
 jwt:
-  secret-key: this_is_local_secret_key
+  secret-key: ${SECRET_KEY}
