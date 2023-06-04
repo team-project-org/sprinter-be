@@ -12,6 +12,9 @@ fun currentKSTDate(): Date =
             .toEpochMilli()
     )
 
+fun currentKSTOffsetDateTime(): OffsetDateTime =
+    OffsetDateTime.now(ZoneId.of("Asia/Seoul"))
+
 fun plusKSTDate(year: Long? = 0, month: Long? = 0, day: Long? = 0, min: Long? = 0): Date =
     Date(
         OffsetDateTime.now(ZoneId.of("Asia/Seoul"))
