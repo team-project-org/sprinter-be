@@ -1,9 +1,5 @@
 package hackathon.sprinter.util
 
-import com.netflix.dgs.codegen.generated.types.Member
-import com.netflix.dgs.codegen.generated.types.Post
-import hackathon.sprinter.post.model.MemberDto
-import hackathon.sprinter.post.model.PostDto
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.util.*

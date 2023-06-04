@@ -1,6 +1,5 @@
 package hackathon.sprinter.jwt.controller
 
-import com.netflix.dgs.codegen.generated.types.CreateMemberInput
 import com.netflix.dgs.codegen.generated.types.LoginInput
 import com.netflix.dgs.codegen.generated.types.SignupInput
 import hackathon.sprinter.member.service.MemberService
