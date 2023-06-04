@@ -5,7 +5,6 @@ CREATE TABLE IF NOT EXISTS sprinter.member
     password            VARCHAR(255)    NOT NULL COMMENT '패스워드',
     token               VARCHAR(255)    NOT NULL COMMENT '리프레쉬 토큰',
     profile_name        VARCHAR(255)    NOT NULL COMMENT '유저 닉네임',
-    role_list           VARCHAR(255)    NULL COMMENT '유저 권한 목록',
     date_created        DATETIME        NOT NULL COMMENT '생성일자',
     date_updated        DATETIME        NOT NULL COMMENT '수정일자',
     auditor             VARCHAR(100)    NULL COMMENT '수정자',
