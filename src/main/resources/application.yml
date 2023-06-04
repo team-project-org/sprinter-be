@@ -18,12 +18,17 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     open-in-view: false
     properties:
       org:
         hibernate:
           format_sql: true
+          envers:
+            revision_field_name: rev_id
+            audit_table_suffix: _histories
+            modified_flag_suffix: _modified
+            store_data_at_delete: true
       hibernate:
         default_batch_fetch_size: 100
         show_sql: false
@@ -38,4 +43,4 @@ spring:
     user: root
     password: sprinter
 jwt:
-  secret-key: this_is_local_secret_key
+  secret-key: this_is_32_byte_local_secret_key

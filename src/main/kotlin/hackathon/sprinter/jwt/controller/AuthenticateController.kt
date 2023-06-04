@@ -2,6 +2,7 @@ package hackathon.sprinter.jwt.controller
 
 import com.netflix.dgs.codegen.generated.types.CreateMemberInput
 import com.netflix.dgs.codegen.generated.types.LoginInput
+import com.netflix.dgs.codegen.generated.types.SignupInput
 import hackathon.sprinter.member.service.MemberService
 import io.swagger.annotations.Api
 import org.springframework.http.HttpStatus
@@ -23,7 +24,7 @@ class AuthenticateController(
     }
 
     @PostMapping("/api/v1/signUp")
-    fun memberSignUp(@RequestBody input: CreateMemberInput): ResponseEntity<ResponseData<Long>> {
+    fun memberSignUp(@RequestBody input: SignupInput): ResponseEntity<ResponseData<Long>> {
         val memberId = memberService.create(input)
         return ResponseEntity
             .status(HttpStatus.OK)

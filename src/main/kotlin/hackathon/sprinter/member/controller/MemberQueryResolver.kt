@@ -1,10 +1,7 @@
 package hackathon.sprinter.member.controller
 
-import com.netflix.dgs.codegen.generated.types.CreateMemberInput
 import com.netflix.dgs.codegen.generated.types.MemberResponse
-import com.netflix.dgs.codegen.generated.types.UpdateProfileNameInput
 import com.netflix.graphql.dgs.DgsComponent
-import com.netflix.graphql.dgs.DgsMutation
 import com.netflix.graphql.dgs.DgsQuery
 import com.netflix.graphql.dgs.InputArgument
 import hackathon.sprinter.configure.dto.ID
