@@ -6,12 +6,14 @@ import hackathon.sprinter.member.service.MemberService
 import io.swagger.annotations.Api
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @Api("Auth")
+@PreAuthorize("hasAnyRole('USER', 'ADMIN', 'ANONYMOUS')")
 class AuthenticateController(
     private val memberService: MemberService
 ) {

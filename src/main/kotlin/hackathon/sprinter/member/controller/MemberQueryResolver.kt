@@ -9,6 +9,7 @@ import hackathon.sprinter.member.service.MemberService
 import org.springframework.security.access.prepost.PreAuthorize
 
 @DgsComponent
+@PreAuthorize("hasAnyRole('USER', 'ADMIN', 'ANONYMOUS')")
 class MemberQueryResolver(
     private val memberService: MemberService,
 ) {
