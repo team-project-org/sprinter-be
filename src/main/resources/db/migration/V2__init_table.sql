@@ -80,3 +80,14 @@ create table `sprinter`.`revinfo`
 ) ENGINE=InnoDB
     DEFAULT CHARSET=utf8mb4
     COMMENT='rev 테이블';
+
+CREATE table `sprinter`.`aws_s3_object`
+(
+    id                  BIGINT              NOT NULL AUTO_INCREMENT,
+    url                 VARCHAR(255)        NOT NULL UNIQUE COMMENT 's3 image url',
+    date_created        DATETIME            NOT NULL COMMENT '생성일자',
+    date_updated        DATETIME            NOT NULL COMMENT '수정일자',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB
+    DEFAULT CHARSET=utf8mb4
+    COMMENT='AWS S3 이미지 테이블';

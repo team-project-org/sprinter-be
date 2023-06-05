@@ -8,7 +8,6 @@ import hackathon.sprinter.jwt.handler.CustomAccessDeniedHandler
 import hackathon.sprinter.jwt.handler.CustomAuthenticationEntryPoint
 import hackathon.sprinter.jwt.service.JwtProviderService
 import hackathon.sprinter.jwt.service.PrincipalUserDetailsService
-import hackathon.sprinter.member.service.MemberService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -24,6 +23,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableWebSecurity
@@ -45,7 +47,7 @@ class SecurityConfig(
                     "/swagger-ui.html",
                     "/swagger/**",
                     "/webjars/**",
-                    "/api/v1/signUp",
+                    "/api/v1/sign-up",
                     "/hello",
                     "/playground",
                 )
@@ -61,6 +63,7 @@ class SecurityConfig(
 
             // 비활성화 필터와 커스텀 필터를 추가
             .and()
+            .cors().configurationSource(corsConfigurationSource()).and()
             .csrf().disable()
             .formLogin().disable()
             .httpBasic(Customizer.withDefaults())
@@ -107,5 +110,35 @@ class SecurityConfig(
         return DaoAuthenticationProvider()
             .also { it.setPasswordEncoder(passwordEncoder) }
             .also { it.setUserDetailsService(principalUserDetailsService) }
+    }
+
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource = UrlBasedCorsConfigurationSource().also { cors ->
+        CorsConfiguration().apply {
+            allowedMethods = listOf("POST", "PUT", "DELETE", "GET", "OPTIONS", "HEAD")
+            allowedHeaders = listOf(
+                "Content-Type",
+                "X-Requested-With",
+                "Accept",
+                "Origin",
+                "Access-Control-Request-Method",
+                "Access-Control-Request-Headers"
+            )
+            exposedHeaders = listOf(
+                "Access-Control-Allow-Origin",
+                "Access-Control-Allow-Credentials",
+                JwtConfig.ACCESS_TOKEN_HEADER,
+                JwtConfig.REFRESH_TOKEN_HEADER,
+                "Content-Disposition"
+            )
+            allowedOrigins = listOf(
+                "http://peerfund.hackathon.sparcs.org",
+                "http://localhost",
+                "http://localhost:3000",
+                "http://ec2-54-180-159-18.ap-northeast-2.compute.amazonaws.com",
+            )
+            maxAge = 3600
+            cors.registerCorsConfiguration("/**", this)
+        }
     }
 }

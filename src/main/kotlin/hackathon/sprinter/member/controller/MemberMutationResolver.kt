@@ -9,11 +9,11 @@ import hackathon.sprinter.member.service.MemberService
 import org.springframework.security.access.prepost.PreAuthorize
 
 @DgsComponent
+@PreAuthorize("hasAnyRole('USER', 'ADMIN', 'ANONYMOUS')")
 class MemberMutationResolver(
     private val memberService: MemberService,
 ) {
     @DgsMutation
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'ANONYMOUS')")
     fun createMember(
         @InputArgument input: SignupInput
     ): Long {
@@ -21,7 +21,6 @@ class MemberMutationResolver(
     }
 
     @DgsMutation
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'ANONYMOUS')")
     fun updateProfileName(
         @InputArgument input: UpdateProfileNameInput
     ): Long {

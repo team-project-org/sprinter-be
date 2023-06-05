@@ -44,3 +44,12 @@ spring:
     password: sprinter
 jwt:
   secret-key: this_is_32_byte_local_secret_key
+
+aws:
+  s3-bucket:
+    sprinter:
+      folder: local_sprinter_folder
+      bucket: local_sprinter_bucket
+    access-key: local_access_key
+    secret-key: local_secret_key
+    region: local_region
