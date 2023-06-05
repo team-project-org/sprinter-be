@@ -7,11 +7,11 @@ import hackathon.sprinter.post.service.PostMutationService
 import org.springframework.security.access.prepost.PreAuthorize
 
 @DgsComponent
+@PreAuthorize("hasAnyRole('USER', 'ADMIN', 'ANONYMOUS')")
 class PostMutationResolver(
     private val postMutationService: PostMutationService,
 ) {
     @DgsMutation
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'ANONYMOUS')")
     fun createPost(input: CreatePostInput): Long {
         return postMutationService.createPost(
             title = input.title,

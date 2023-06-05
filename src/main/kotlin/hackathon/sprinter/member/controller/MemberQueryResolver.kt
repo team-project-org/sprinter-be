@@ -45,6 +45,7 @@ class MemberQueryResolver(
     }
 
     @DgsQuery
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'ANONYMOUS')")
     fun getAllMemberList(): List<MemberResponse> {
         return memberService.findAllMember()
     }

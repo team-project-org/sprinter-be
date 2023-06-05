@@ -11,6 +11,7 @@ fun corsFilter(): CorsFilter {
     val config = CorsConfiguration()
     config.allowCredentials = true
     config.addAllowedOrigin("http://localhost")
+    config.addAllowedOrigin("http://13.124.178.210")
     config.addAllowedHeader("*")
     config.addExposedHeader("Authorization")
     config.addAllowedMethod("*")

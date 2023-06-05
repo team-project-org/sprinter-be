@@ -8,11 +8,11 @@ import hackathon.sprinter.util.toGqlSchema
 import org.springframework.security.access.prepost.PreAuthorize
 
 @DgsComponent
+@PreAuthorize("hasAnyRole('USER', 'ADMIN', 'ANONYMOUS')")
 class PostQueryResolver(
     private val postQueryService: PostQueryService,
 ) {
     @DgsQuery
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'ANONYMOUS')")
     fun getAllPostList(): PostList {
         val allPostList = postQueryService.getAllPostList()
 

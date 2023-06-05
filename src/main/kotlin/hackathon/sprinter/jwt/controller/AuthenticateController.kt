@@ -22,7 +22,7 @@ class AuthenticateController(
             .body("성공")
     }
 
-    @PostMapping("/api/v1/signUp")
+    @PostMapping("/api/v1/sign-up")
     fun memberSignUp(@RequestBody input: SignupInput): ResponseEntity<ResponseData<Long>> {
         val memberId = memberService.create(input)
         return ResponseEntity
