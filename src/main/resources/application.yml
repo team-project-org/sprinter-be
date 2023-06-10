@@ -42,6 +42,7 @@ spring:
     baseline-version: 1
     user: root
     password: sprinter
+    enabled: true
 jwt:
   secret-key: this_is_32_byte_local_secret_key
 
