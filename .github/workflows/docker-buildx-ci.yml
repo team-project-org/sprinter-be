@@ -32,9 +32,9 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: dnstlr2933/sprinter:latest
-          build-args: |
-            DB_USER=${{ secrets.DB_USER }}
-            DB_URL=${{ secrets.DB_URL }}
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            JWT_SECRET=${{ secrets.JWT_SECRET }}
+#          build-args: |
+#            DB_USER=${{ secrets.DB_USER }}
+#            DB_URL=${{ secrets.DB_URL }}
+#            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+#            JWT_SECRET=${{ secrets.JWT_SECRET }}
 
