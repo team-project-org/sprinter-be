@@ -18,6 +18,6 @@ class PostMutationResolver(
             startDate = input.start_date,
             endDate = input.end_date,
             ownerUsername = input.owner_username,
-        )
+        ).id
     }
 }

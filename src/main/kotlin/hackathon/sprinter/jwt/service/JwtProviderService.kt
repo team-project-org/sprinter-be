@@ -135,11 +135,12 @@ class JwtProviderService(
 
     }
 
-    fun setResponseMessage(result: Boolean, response: HttpServletResponse, message: String) {
+    fun setResponseMessage(result: Boolean, response: HttpServletResponse, message: String, memberId: Long? = null) {
         response.contentType = "application/json;charset=UTF-8"
         val content = JSONObject()
             .apply { put("success", result) }
             .apply { put("message", message) }
+            .apply { put("id", memberId) }
         response
             .writer
             .print(content)

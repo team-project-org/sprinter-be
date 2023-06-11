@@ -21,11 +21,16 @@ class Post(
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     val memberPostList: MutableList<MemberPost> = mutableListOf(),
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    val ownerMember: Member,
+    var ownerMember: Member? = null,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long = 0L,
 ) : BaseEntity() {
 
     fun isOwner(member: Member): Boolean {
-        return this.ownerMember.id == member.id
+        return this.ownerMember?.id == member.id
+    }
+
+    fun changeOwner(member: Member): Boolean {
+        this.ownerMember = member
+        return true
     }
 }

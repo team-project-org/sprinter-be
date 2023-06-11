@@ -1,17 +1,18 @@
 package hackathon.sprinter.util
 
 import com.netflix.dgs.codegen.generated.types.MemberResponse
-import com.netflix.dgs.codegen.generated.types.Post
+import com.netflix.dgs.codegen.generated.types.PostResponse
 import hackathon.sprinter.member.model.Member
 import hackathon.sprinter.post.model.MemberDto
 import hackathon.sprinter.post.model.PostDto
 
-fun PostDto.toGqlSchema(): Post {
-    return Post(
+fun PostDto.toGqlSchema(): PostResponse {
+    return PostResponse(
+        id = this.id,
         title = this.title,
         start_date = this.startDate,
         end_date = this.endDate,
-        owner = this.owner.toGqlSchema()
+        owner = this.owner?.toGqlSchema()
     )
 }
 

@@ -68,6 +68,7 @@ dependencies {
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
     // DGS
+    implementation("com.graphql-java:graphql-java-extended-scalars")
     implementation(platform("com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:$dgsVersion"))
     runtimeOnly("com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter:$dgsVersion")
     implementation("com.netflix.graphql.dgs:graphql-dgs-extended-scalars")
@@ -124,6 +125,7 @@ tasks.withType<com.netflix.graphql.dgs.codegen.gradle.GenerateJavaTask> {
     language = "kotlin"
     generateKotlinNullableClasses = false
     typeMapping = mutableMapOf(
-        "RoleType" to "hackathon.sprinter.member.model.RoleType"
+        "RoleType" to "hackathon.sprinter.member.model.RoleType",
+        "Long" to "kotlin.Long",
     )
 }

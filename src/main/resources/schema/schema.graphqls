@@ -1,3 +1,4 @@
+scalar Long
 scalar DateTime
 
 schema {
@@ -6,29 +7,43 @@ schema {
 }
 
 type Query {
+    """ 회원 조회 """
     getMember(member_id: ID!): MemberResponse!
-    getAllMemberList: [MemberResponse!]!
+    """ 회원 전체 조회 """
+    getAllMemberList: MemberList!
     getQueryUserAuth: Boolean!
     getQueryAdminAuth: Boolean!
     getQueryAnonymousAuth: Boolean!
     getQueryAnonymous2Auth: Boolean!
+    """ 포스트 전체 조회 """
     getAllPostList: PostList!
+}
+
+type MemberList {
+    total_count: Int!
+    item_list: [MemberResponse!]!
 }
 
 type PostList {
     total_count: Int!
-    item_list: [Post!]!
+    item_list: [PostResponse!]!
 }
 
-type Post {
+type PostResponse {
+    """ 포스트 ID """
+    id: ID!
+    """ 포스트 제목 """
     title: String!
+    """ 포스트 시작일 """
     start_date: DateTime!
+    """ 포스트 종료일 """
     end_date: DateTime!
-    owner: MemberResponse!
+    """ 포스트 주인 """
+    owner: MemberResponse
 }
 
 type MemberResponse {
-    """ 회원 PK """
+    """ 회원 ID """
     id: ID!
     """ 회원 고유 이름 """
     username: String!
@@ -39,33 +54,46 @@ type MemberResponse {
 }
 
 type Mutation {
+    """ 회원 생성 """
     createMember(input: SignupInput!): ID!
+    """ 포스트 생성 """
     createPost(input: CreatePostInput!): ID!
+    """ 회원 프로필 네임 수정 """
     updateProfileName(input: UpdateProfileNameInput!): ID!
 }
 
 input SignupInput {
+    """ 회원 고유 USERNAME """
     username: String!
+    """ 회원 패스워드 """
     password: String!
+    """ 회원 프로필 네임 """
     profile_name: String!
 }
 
 input UpdateProfileNameInput {
+    """ 회원 ID """
     id: ID!
+    """ 갱신할 새 프로필 네임 """
     new_profile_name: String!
-    auditor: String!
 }
 
 input LoginInput {
+    """ 회원 USERNAME """
     username: String!
+    """ 회원 PASSWORD """
     password: String!
 }
 
 input CreatePostInput {
+    """ 포스트 제목 """
     title: String!
+    """ 회원 USERNAME """
     owner_username: String!
-    start_date: DateTime!
-    end_date: DateTime!
+    """ 포스트 시작 Unix Second """
+    start_date: Long!
+    """ 포스트 종료 Unix Second """
+    end_date: Long!
 }
 
 enum RoleType {

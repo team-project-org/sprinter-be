@@ -40,11 +40,14 @@ class Member(
         this.roleList.add(Role(roleType))
     }
 
-    fun createPost(memberPost: MemberPost, post: Post) {
-        memberPostList.add(memberPost)
+    fun createPost(memberPost: MemberPost, post: Post): Post {
+        this.memberPostList.add(memberPost)
         post.memberPostList.add(memberPost)
         memberPost.member = this
         memberPost.post = post
-        ownerPostList.add(post)
+        this.ownerPostList.add(post)
+        post.ownerMember = this
+
+        return post
     }
 }

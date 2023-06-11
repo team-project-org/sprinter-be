@@ -16,6 +16,7 @@ data class PrincipalUserDetails(
         return authorities
     }
 
+    fun getId() = member.id
     override fun getPassword() = member.password
     override fun getUsername() = member.username
     override fun isAccountNonExpired() = true

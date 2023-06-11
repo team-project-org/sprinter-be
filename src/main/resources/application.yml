@@ -46,6 +46,17 @@ spring:
 jwt:
   secret-key: this_is_32_byte_local_secret_key
 
+dgs:
+  graphql:
+    extensions:
+      scalars:
+        numbers:
+          enabled: true
+        time-dates:
+          enabled: true
+    schema-locations:
+      - classpath*:schema/**/*.graphql*
+
 aws:
   s3-bucket:
     sprinter:

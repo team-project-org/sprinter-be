@@ -1,7 +1,6 @@
 package hackathon.sprinter.configure
 
 import hackathon.sprinter.configure.dto.ErrorCode
-import org.springframework.security.core.AuthenticationException
 
 /** 찾고자 하는 리소스가 없는 경우 */
 data class DataNotFoundException(
@@ -24,3 +23,9 @@ open class CustomClientException(
     throwable: Throwable? = null
 ) : RuntimeException(msg, throwable)
 
+/** JWT 관련 에러 */
+data class JwtException(
+    override val errorCode: ErrorCode,
+    val msg: String = "",
+    val throwable: Throwable? = null,
+): CustomClientException(errorCode, msg, throwable)

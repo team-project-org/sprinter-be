@@ -3,6 +3,7 @@ package hackathon.sprinter.jwt.authenticationfilter
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.netflix.dgs.codegen.generated.types.LoginInput
 import hackathon.sprinter.configure.DataNotFoundException
+import hackathon.sprinter.configure.JwtException
 import hackathon.sprinter.configure.dto.ErrorCode
 import hackathon.sprinter.jwt.model.PrincipalUserDetails
 import hackathon.sprinter.jwt.service.JwtProviderService
@@ -12,7 +13,6 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import java.io.IOException
 import javax.servlet.FilterChain
@@ -37,7 +37,7 @@ class CustomUsernamePasswordAuthenticationFilter(
             val authentication = UsernamePasswordAuthenticationToken(loginInput.username, loginInput.password)
             return authenticationManager.authenticate(authentication)
         } catch (e: IOException) {
-            e.printStackTrace()
+            log.error("[인증 시도 실패]: ${e.message}")
             throw DataNotFoundException(ErrorCode.ITEM_NOT_EXIST, "회원이 존재하지 않습니다.")
         }
     }
@@ -48,18 +48,23 @@ class CustomUsernamePasswordAuthenticationFilter(
         chain: FilterChain?,
         authResult: Authentication?
     ) {
-        val principal: PrincipalUserDetails = authResult!!.principal as PrincipalUserDetails
+        try {
+            val principal: PrincipalUserDetails = authResult!!.principal as PrincipalUserDetails
 
-        val accessToken: String = jwtProviderService.createAccessToken(principal.username)
-        val refreshToken: String = jwtProviderService.createRefreshToken()
+            val accessToken: String = jwtProviderService.createAccessToken(principal.username)
+            val refreshToken: String = jwtProviderService.createRefreshToken()
 
-        jwtProviderService.saveRefreshToken(principal.username, refreshToken)
+            jwtProviderService.saveRefreshToken(principal.username, refreshToken)
 
-        jwtProviderService.setHeaderOfAccessToken(response, accessToken)
-        jwtProviderService.setHeaderOfRefreshToken(response, refreshToken)
+            jwtProviderService.setHeaderOfAccessToken(response, accessToken)
+            jwtProviderService.setHeaderOfRefreshToken(response, refreshToken)
 
-        jwtProviderService.setResponseMessage(true, response, "로그인 성공")
-        log.info("[인증 성공] JWT 발급")
+            jwtProviderService.setResponseMessage(true, response, "로그인 성공", principal.getId())
+            log.info("[인증 성공] JWT 발급")
+        } catch (e: Exception) {
+            log.error("[토큰 발급 실패]: ${e.message}")
+            throw JwtException(ErrorCode.JWT_CREATE_FAIL, "jwt 토큰 발급에 실패하였습니다. 에러: ${e.message}")
+        }
     }
 
     override fun unsuccessfulAuthentication(
@@ -71,9 +76,8 @@ class CustomUsernamePasswordAuthenticationFilter(
         val failMessage = when (failed!!.message) {
             ErrorCode.ITEM_NOT_EXIST.name -> ErrorCode.ITEM_NOT_EXIST.name
             ErrorCode.WRONG_PASSWORD.name -> ErrorCode.WRONG_PASSWORD.name
-            else -> ErrorCode.UNKNOWN_ERROR.name
+            else -> failed.message
         }
         jwtProviderService.setResponseMessage(false, response, "로그인 실패: $failMessage")
-        throw UsernameNotFoundException(failMessage)
     }
 }

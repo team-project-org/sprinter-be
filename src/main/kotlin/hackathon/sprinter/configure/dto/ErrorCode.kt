@@ -6,4 +6,5 @@ enum class ErrorCode {
     ITEM_NOT_EXIST,
     WRONG_PASSWORD,
     PARAMETER_INVALID,
+    JWT_CREATE_FAIL,
 }
