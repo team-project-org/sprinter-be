@@ -59,7 +59,9 @@ class MemberQueryResolver(
     }
 
     @DgsQuery
-    fun getOwnerPostList(memberId: ID): PostList {
+    fun getOwnerPostList(
+        @InputArgument(name = "member_id") memberId: ID
+    ): PostList {
         val ownerPostList = memberQueryService.getOwnerPostList(memberId.toLong())
         return PostList(
             total_count = ownerPostList.size,

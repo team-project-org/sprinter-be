@@ -18,7 +18,7 @@ type Query {
     """ 포스트 전체 조회 """
     getAllPostList: PostList!
     """ 회원의 작성 포스트 전체 조회 """
-    getOwnerPostList: PostList!
+    getOwnerPostList(member_id: ID!): PostList!
 }
 
 type MemberList {
