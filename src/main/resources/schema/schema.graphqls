@@ -7,16 +7,18 @@ schema {
 }
 
 type Query {
-    """ 회원 조회 """
-    getMember(member_id: ID!): MemberResponse!
-    """ 회원 전체 조회 """
-    getAllMemberList: MemberList!
     getQueryUserAuth: Boolean!
     getQueryAdminAuth: Boolean!
     getQueryAnonymousAuth: Boolean!
     getQueryAnonymous2Auth: Boolean!
+    """ 회원 조회 """
+    getMember(member_id: ID!): MemberResponse!
+    """ 회원 전체 조회 """
+    getAllMemberList: MemberList!
     """ 포스트 전체 조회 """
     getAllPostList: PostList!
+    """ 회원의 작성 포스트 전체 조회 """
+    getOwnerPostList: PostList!
 }
 
 type MemberList {
