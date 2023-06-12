@@ -4,6 +4,8 @@ import com.netflix.dgs.codegen.generated.types.LoginInput
 import com.netflix.dgs.codegen.generated.types.SignupInput
 import hackathon.sprinter.member.creator.MemberCreator
 import io.swagger.annotations.Api
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController
 class AuthenticateController(
     private val memberCreator: MemberCreator,
 ) {
+    private val log: Logger = LoggerFactory.getLogger(this::class.simpleName)
+
     @PostMapping("/api/v1/login")
     fun memberLogin(@RequestBody input: LoginInput): ResponseEntity<ResponseData<String>> {
         return try {

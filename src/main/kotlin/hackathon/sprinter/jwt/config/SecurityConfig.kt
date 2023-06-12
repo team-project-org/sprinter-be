@@ -23,9 +23,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
-import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.CorsConfigurationSource
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableWebSecurity
@@ -63,7 +60,6 @@ class SecurityConfig(
 
             // 비활성화 필터와 커스텀 필터를 추가
             .and()
-            .cors().configurationSource(corsConfigurationSource()).and()
             .csrf().disable()
             .formLogin().disable()
             .httpBasic(Customizer.withDefaults())
@@ -85,7 +81,8 @@ class SecurityConfig(
             // 로그아웃 시 로그인 페이지로 이동
             .and()
             .logout()
-            .logoutSuccessUrl("/api/v1/login") // 로그아웃에 대해서 성공하면 "/"로 이동
+            .logoutUrl("/api/v1/logout")
+            .logoutSuccessUrl("/") // 로그아웃에 대해서 성공하면 "/"로 이동
 
         return http.build()
     }
@@ -112,33 +109,4 @@ class SecurityConfig(
             .also { it.setUserDetailsService(principalUserDetailsService) }
     }
 
-    @Bean
-    fun corsConfigurationSource(): CorsConfigurationSource = UrlBasedCorsConfigurationSource().also { cors ->
-        CorsConfiguration().apply {
-            allowedMethods = listOf("POST", "PUT", "DELETE", "GET", "OPTIONS", "HEAD")
-            allowedHeaders = listOf(
-                "Content-Type",
-                "X-Requested-With",
-                "Accept",
-                "Origin",
-                "Access-Control-Request-Method",
-                "Access-Control-Request-Headers"
-            )
-            exposedHeaders = listOf(
-                "Access-Control-Allow-Origin",
-                "Access-Control-Allow-Credentials",
-                JwtConfig.ACCESS_TOKEN_HEADER,
-                JwtConfig.REFRESH_TOKEN_HEADER,
-                "Content-Disposition"
-            )
-            allowedOrigins = listOf(
-                "http://peerfund.hackathon.sparcs.org",
-                "http://localhost",
-                "http://localhost:3000",
-                "http://ec2-54-180-159-18.ap-northeast-2.compute.amazonaws.com",
-            )
-            maxAge = 3600
-            cors.registerCorsConfiguration("/**", this)
-        }
-    }
 }
