@@ -1,8 +1,6 @@
 package hackathon.sprinter.post.repository
 
 import hackathon.sprinter.post.model.Post
-import hackathon.sprinter.post.model.QPost
-import hackathon.sprinter.post.model.QPost.post
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import org.springframework.stereotype.Repository
 import javax.persistence.EntityManager
