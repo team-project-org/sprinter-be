@@ -12,7 +12,8 @@ type Query {
     getQueryAnonymousAuth: Boolean!
     getQueryAnonymous2Auth: Boolean!
     """ 회원 조회 """
-    getMember(member_id: ID!): MemberResponse!
+    getMemberAdmin(member_id: ID!): MemberResponse!
+    getMember: MemberResponse!
     """ 회원 전체 조회 """
     getAllMemberList: MemberList!
     """ 포스트 전체 조회 """
