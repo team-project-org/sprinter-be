@@ -136,6 +136,7 @@ class JwtProviderService(
     }
 
     fun setResponseMessage(result: Boolean, response: HttpServletResponse, message: String, memberId: Long? = null) {
+        response.status = HttpStatus.BAD_REQUEST.value()
         response.contentType = "application/json;charset=UTF-8"
         val content = JSONObject()
             .apply { put("success", result) }
