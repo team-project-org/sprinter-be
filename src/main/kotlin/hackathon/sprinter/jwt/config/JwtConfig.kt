@@ -11,6 +11,7 @@ interface JwtConfig {
         const val USERNAME = "USERNAME"
         const val ACCESS_TOKEN_HEADER = "Authorization"
         const val REFRESH_TOKEN_HEADER = "Authorization-refresh"
+        const val TOKEN_PREFIX = "Bearer "
         const val STRENGTH = 10
         const val ACCESS_TOKEN_EXPIRATION = 30L * (2 * 24 * 30)//(for test) // 30min
         const val REFRESH_TOKEN_EXPIRATION = 30L // 30day

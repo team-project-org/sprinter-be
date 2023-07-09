@@ -60,23 +60,19 @@ class JwtProviderService(
     }
 
     fun checkValidAccessHeader(request: HttpServletRequest): Boolean {
-        request
-            .apply { getHeader(JwtConfig.ACCESS_TOKEN_HEADER) ?: return false }
-        return true
+        return request.getHeader(JwtConfig.ACCESS_TOKEN_HEADER)?.startsWith(JwtConfig.TOKEN_PREFIX) ?: return false
     }
 
     fun checkValidRefreshHeader(request: HttpServletRequest): Boolean {
-        request
-            .apply { getHeader(JwtConfig.REFRESH_TOKEN_HEADER) ?: return false }
-        return true
+        return request.getHeader(JwtConfig.REFRESH_TOKEN_HEADER)?.startsWith(JwtConfig.TOKEN_PREFIX) ?: return false
     }
 
     fun extractAccessToken(request: HttpServletRequest): String {
-        return request.getHeader(JwtConfig.ACCESS_TOKEN_HEADER)
+        return request.getHeader(JwtConfig.ACCESS_TOKEN_HEADER).replace(JwtConfig.TOKEN_PREFIX, "")
     }
 
     fun extractRefreshToken(request: HttpServletRequest): String {
-        return request.getHeader(JwtConfig.REFRESH_TOKEN_HEADER)
+        return request.getHeader(JwtConfig.REFRESH_TOKEN_HEADER).replace(JwtConfig.TOKEN_PREFIX, "")
     }
 
     fun checkValidToken(token: String): Boolean {
