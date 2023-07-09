@@ -11,15 +11,24 @@ type Query {
     getQueryAdminAuth: Boolean!
     getQueryAnonymousAuth: Boolean!
     getQueryAnonymous2Auth: Boolean!
+
     """ 회원 조회 """
     getMemberAdmin(member_id: ID!): MemberResponse!
-    getMember: MemberResponse!
+    """ 회원 자신을 조회 """
+    getMe: MemberResponse!
+    """ 특정 회원을 조회 """
+    getMember(member_id: ID!): MemberResponse!
+
     """ 회원 전체 조회 """
     getAllMemberList: MemberList!
+
+    """ 회원 자신이 작성한 포스트 전체 조회 """
+    getMyPostList: PostList!
+    """ 특정 회원이 작성한 포스트 전체 조회 """
+    getMemberPostList(member_id: ID!): PostList!
+
     """ 포스트 전체 조회 """
     getAllPostList: PostList!
-    """ 회원의 작성 포스트 전체 조회 """
-    getOwnerPostList(member_id: ID!): PostList!
 }
 
 type MemberList {

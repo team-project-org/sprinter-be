@@ -7,26 +7,17 @@ import com.netflix.graphql.dgs.DgsComponent
 import com.netflix.graphql.dgs.DgsQuery
 import com.netflix.graphql.dgs.InputArgument
 import hackathon.sprinter.configure.dto.ID
-import hackathon.sprinter.jwt.model.PrincipalUserDetails
+import hackathon.sprinter.member.service.MemberAuthenticateService
 import hackathon.sprinter.member.service.MemberQueryService
-import hackathon.sprinter.member.service.MemberService
-import hackathon.sprinter.util.toGqlSchema
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.authentication.AnonymousAuthenticationToken
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.context.SecurityContextHolder
 
 
 @DgsComponent
 @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'ANONYMOUS')")
 class MemberQueryResolver(
-    private val memberService: MemberService,
     private val memberQueryService: MemberQueryService,
+    private val memberAuthenticateService: MemberAuthenticateService,
 ) {
-    private val log: Logger = LoggerFactory.getLogger(this::class.simpleName)
-
     @DgsQuery
     @PreAuthorize("hasRole('USER')")
     fun getQueryUserAuth(): Boolean {
@@ -52,41 +43,53 @@ class MemberQueryResolver(
     }
 
     @DgsQuery
+    @PreAuthorize("hasRole('ADMIN')")
     fun getMemberAdmin(
         @InputArgument(name = "member_id") memberId: ID
     ): MemberResponse {
-        return memberService.findMemberDtoById(memberId.toLong()).toGqlSchema()
+        return memberQueryService.findMemberResponseById(memberId.toLong())
     }
 
     @DgsQuery
-    fun getMember(): MemberResponse {
-        val authentication: Authentication = SecurityContextHolder.getContext().authentication
-        if (authentication is AnonymousAuthenticationToken || authentication.principal == null) {
-            throw Exception()
-        }
-        val currentUser  = authentication.principal as PrincipalUserDetails
-        val userPk = currentUser.getId()
-        return memberService.findMemberDtoById(userPk).toGqlSchema()
+    fun getMe(): MemberResponse {
+        val userPk = memberAuthenticateService.findMemberPkByAuthentication()
+        return memberQueryService.findMemberResponseById(userPk)
+    }
+
+    @DgsQuery
+    fun getMember(
+        @InputArgument(name = "member_id") memberId: ID
+    ): MemberResponse {
+        return memberQueryService.findMemberResponseById(memberId.toLong())
     }
 
     @DgsQuery
     fun getAllMemberList(): MemberList {
-        val memberList = memberService.findAllMember()
+        val memberResponseList = memberQueryService.findAllMemberResponse()
         return MemberList(
-            total_count = memberList.size,
-            item_list = memberList.map { it.toGqlSchema() }
+            total_count = memberResponseList.size,
+            item_list = memberResponseList
         )
     }
 
     @DgsQuery
-    fun getOwnerPostList(
-        @InputArgument(name = "member_id") memberId: ID
-    ): PostList {
-        val ownerPostList = memberQueryService.getOwnerPostList(memberId.toLong())
+    fun getMyPostList(): PostList {
+        val memberPk = memberAuthenticateService.findMemberPkByAuthentication()
+        val ownerPostList = memberQueryService.getOwnerPostResponseList(memberPk)
         return PostList(
             total_count = ownerPostList.size,
-            item_list = ownerPostList.map { it.toGqlSchema() }
+            item_list = ownerPostList
         )
     }
 
+    @DgsQuery
+    fun getMemberPostList(
+        @InputArgument(name = "member_id") memberId: ID
+    ): PostList {
+        val ownerPostListResponse = memberQueryService.getOwnerPostResponseList(memberId.toLong())
+        return PostList(
+            total_count = ownerPostListResponse.size,
+            item_list = ownerPostListResponse
+        )
+    }
 }

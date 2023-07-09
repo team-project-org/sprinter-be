@@ -7,4 +7,5 @@ enum class ErrorCode {
     WRONG_PASSWORD,
     PARAMETER_INVALID,
     JWT_CREATE_FAIL,
+    AUTHENTICATE_FAIL,
 }

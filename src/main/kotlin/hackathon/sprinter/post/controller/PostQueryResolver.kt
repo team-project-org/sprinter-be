@@ -14,11 +14,11 @@ class PostQueryResolver(
 ) {
     @DgsQuery
     fun getAllPostList(): PostList {
-        val allPostList = postQueryService.getAllPostList()
+        val allPost = postQueryService.getAllPostList()
 
         return PostList(
-            allPostList.size,
-            allPostList.map { it.toGqlSchema() }
+            allPost.size,
+            allPost.map { it.toGqlSchema() }
         )
     }
 }
