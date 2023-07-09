@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS sprinter.member
     profile_name        VARCHAR(255)    NOT NULL COMMENT '유저 닉네임',
     date_created        DATETIME        NOT NULL COMMENT '생성일자',
     date_updated        DATETIME        NOT NULL COMMENT '수정일자',
-    auditor             VARCHAR(100)    NULL COMMENT '수정자',
+    date_deleted        DATETIME        NULL COMMENT '삭제일자',
     PRIMARY KEY (`id`),
     UNIQUE  username (`username`)
 ) ENGINE=InnoDB
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS sprinter.role (
     UNIQUE  role_type (`role_type`)
 ) ENGINE=InnoDB
     DEFAULT CHARSET=utf8mb4
-    COMMENT='권한 테이블';
+    COMMENT='권한 목록 테이블';
 
 INSERT INTO sprinter.role(ROLE_TYPE)
 SELECT * FROM (SELECT 'ROLE_USER' AS roleType) AS tmp
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `sprinter`.`member_role_list`
     PRIMARY KEY (`member_id`)
 ) ENGINE=InnoDB
     DEFAULT CHARSET=utf8mb4
-    COMMENT='회원 권한 테이블';
+    COMMENT='회원 별 권한 테이블';
 
 CREATE TABLE IF NOT EXISTS `sprinter`.`post`
 (
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `sprinter`.`post`
     owner_member_id     BIGINT              NOT NULL COMMENT '포스트 주인 아이디',
     date_created        DATETIME            NOT NULL COMMENT '생성일자',
     date_updated        DATETIME            NOT NULL COMMENT '수정일자',
-    auditor             VARCHAR(100)        NULL COMMENT '수정자',
+    date_deleted        DATETIME            NULL COMMENT '삭제일자',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB
     DEFAULT CHARSET=utf8mb4
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `sprinter`.`member_post`
     post_id             BIGINT              NOT NULL COMMENT '포스트 아이디',
     date_created        DATETIME            NOT NULL COMMENT '생성일자',
     date_updated        DATETIME            NOT NULL COMMENT '수정일자',
-    auditor             VARCHAR(100)        NULL COMMENT '수정자',
+    date_deleted        DATETIME            NULL COMMENT '삭제일자',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB
     DEFAULT CHARSET=utf8mb4
@@ -87,6 +87,7 @@ CREATE table `sprinter`.`aws_s3_object`
     url                 VARCHAR(255)        NOT NULL UNIQUE COMMENT 's3 image url',
     date_created        DATETIME            NOT NULL COMMENT '생성일자',
     date_updated        DATETIME            NOT NULL COMMENT '수정일자',
+    date_deleted        DATETIME            NULL COMMENT '삭제일자',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB
     DEFAULT CHARSET=utf8mb4

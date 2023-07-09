@@ -29,3 +29,10 @@ data class JwtException(
     val msg: String = "",
     val throwable: Throwable? = null,
 ): CustomClientException(errorCode, msg, throwable)
+
+/** 로그인 에러 */
+data class AuthenticationException(
+    override val errorCode: ErrorCode,
+    val msg: String = "",
+    val throwable: Throwable? = null,
+): CustomClientException(errorCode, msg, throwable)

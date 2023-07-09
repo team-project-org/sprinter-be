@@ -4,6 +4,7 @@ import hackathon.sprinter.member.model.Member
 import hackathon.sprinter.member.model.QMember.member
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import org.springframework.stereotype.Repository
+import org.springframework.transaction.annotation.Transactional
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 
@@ -17,6 +18,7 @@ class MemberRepository(
         super.setEntityManager(entityManager)
     }
 
+    @Transactional(readOnly = true)
     fun findMemberById(id: Long): Member? {
         return from(member)
             .where(member.id.eq(id))
@@ -26,12 +28,6 @@ class MemberRepository(
     fun findMemberByUsername(username: String): Member? {
         return from(member)
             .where(member.username.eq(username))
-            .fetchOne()
-    }
-
-    fun findMember(id: Long): Member {
-        return from(member)
-            .where(member.id.eq(id))
             .fetchOne()
     }
 

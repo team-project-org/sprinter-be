@@ -3,7 +3,7 @@ package hackathon.sprinter.jwt.service
 import hackathon.sprinter.jwt.authenticationfilter.JwtExceptionResponse
 import hackathon.sprinter.jwt.config.JwtConfig
 import hackathon.sprinter.member.model.Member
-import hackathon.sprinter.member.service.MemberService
+import hackathon.sprinter.member.service.MemberQueryService
 import hackathon.sprinter.util.currentKSTDate
 import hackathon.sprinter.util.plusKSTDate
 import io.jsonwebtoken.ExpiredJwtException
@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse
 
 @Service
 class JwtProviderService(
-    private val memberService: MemberService
+    private val memberQueryService: MemberQueryService
 ) {
     @Value("\${jwt.secret-key}")
     private val secretValue: String? = null
@@ -111,16 +111,16 @@ class JwtProviderService(
     }
 
     fun findMemberByRefreshToken(refreshToken: String): Member {
-        return memberService.findMemberByToken(refreshToken)
+        return memberQueryService.findMemberByToken(refreshToken)
     }
 
     fun findMemberByAccessToken(accessToken: String): Member {
-        return memberService.findMemberByUsername(getUsername(accessToken))
+        return memberQueryService.findMemberByUsername(getUsername(accessToken))
     }
 
     @Transactional
     fun saveRefreshToken(username: String, token: String) {
-        memberService
+        memberQueryService
             .findMemberByUsername(username)
             .updateToken(token)
     }
@@ -128,7 +128,7 @@ class JwtProviderService(
     @Transactional
     fun reissueRefreshToken(username: String): String {
         val reissuedRefreshToken = createRefreshToken()
-        memberService
+        memberQueryService
             .findMemberByUsername(username)
             .updateToken(reissuedRefreshToken)
         return reissuedRefreshToken

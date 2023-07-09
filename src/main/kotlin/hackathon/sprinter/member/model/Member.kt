@@ -1,18 +1,10 @@
 package hackathon.sprinter.member.model
 
-import hackathon.sprinter.configure.dto.BaseEntity
+import hackathon.sprinter.configure.dto.BaseTimeEntity
 import hackathon.sprinter.post.model.MemberPost
 import hackathon.sprinter.post.model.Post
 import java.io.Serializable
-import javax.persistence.CascadeType
-import javax.persistence.Column
-import javax.persistence.ElementCollection
-import javax.persistence.Entity
-import javax.persistence.FetchType
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.OneToMany
+import javax.persistence.*
 
 @Entity
 class Member(
@@ -26,7 +18,7 @@ class Member(
     @OneToMany(mappedBy = "ownerMember", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     val ownerPostList: MutableList<Post> = mutableListOf(),
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long = 0L,
-) : BaseEntity(), Serializable {
+) : BaseTimeEntity(), Serializable {
 
     fun updateToken(token: String) {
         this.token = token

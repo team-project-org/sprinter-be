@@ -1,17 +1,9 @@
 package hackathon.sprinter.post.model
 
-import hackathon.sprinter.configure.dto.BaseEntity
+import hackathon.sprinter.configure.dto.BaseTimeEntity
 import hackathon.sprinter.member.model.Member
 import java.time.OffsetDateTime
-import javax.persistence.CascadeType
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.FetchType
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.ManyToOne
-import javax.persistence.OneToMany
+import javax.persistence.*
 
 @Entity
 class Post(
@@ -23,7 +15,7 @@ class Post(
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     var ownerMember: Member? = null,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long = 0L,
-) : BaseEntity() {
+) : BaseTimeEntity() {
 
     fun isOwner(member: Member): Boolean {
         return this.ownerMember?.id == member.id
