@@ -61,26 +61,22 @@ class JwtProviderService(
 
     fun checkValidAccessHeader(request: HttpServletRequest): Boolean {
         request
-            .apply { getHeader(JwtConfig.ACCESS_TOKEN_HEADER)?.startsWith(JwtConfig.TOKEN_PREFIX) ?: return false }
+            .apply { getHeader(JwtConfig.ACCESS_TOKEN_HEADER) ?: return false }
         return true
     }
 
     fun checkValidRefreshHeader(request: HttpServletRequest): Boolean {
         request
-            .apply { getHeader(JwtConfig.REFRESH_TOKEN_HEADER)?.startsWith(JwtConfig.TOKEN_PREFIX) ?: return false }
+            .apply { getHeader(JwtConfig.REFRESH_TOKEN_HEADER) ?: return false }
         return true
     }
 
     fun extractAccessToken(request: HttpServletRequest): String {
-        return request
-            .getHeader(JwtConfig.ACCESS_TOKEN_HEADER)
-            .replace(JwtConfig.TOKEN_PREFIX, "")
+        return request.getHeader(JwtConfig.ACCESS_TOKEN_HEADER)
     }
 
     fun extractRefreshToken(request: HttpServletRequest): String {
-        return request
-            .getHeader(JwtConfig.REFRESH_TOKEN_HEADER)
-            .replace(JwtConfig.TOKEN_PREFIX, "")
+        return request.getHeader(JwtConfig.REFRESH_TOKEN_HEADER)
     }
 
     fun checkValidToken(token: String): Boolean {
@@ -152,11 +148,11 @@ class JwtProviderService(
     }
 
     fun setHeaderOfAccessToken(response: HttpServletResponse, token: String) {
-        response.addHeader(JwtConfig.ACCESS_TOKEN_HEADER, JwtConfig.TOKEN_PREFIX + token)
+        response.addHeader(JwtConfig.ACCESS_TOKEN_HEADER, token)
     }
 
     fun setHeaderOfRefreshToken(response: HttpServletResponse, token: String) {
-        response.addHeader(JwtConfig.REFRESH_TOKEN_HEADER, JwtConfig.TOKEN_PREFIX + token)
+        response.addHeader(JwtConfig.REFRESH_TOKEN_HEADER, token)
     }
 
     fun setErrorResponseMessage(response: HttpServletResponse, status: HttpStatus, errorType: String, message: String) {
