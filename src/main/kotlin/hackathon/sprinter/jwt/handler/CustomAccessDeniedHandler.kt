@@ -1,5 +1,6 @@
 package hackathon.sprinter.jwt.handler
 
+import hackathon.sprinter.configure.dto.ErrorCode
 import hackathon.sprinter.jwt.config.JwtConfig
 import hackathon.sprinter.jwt.service.JwtProviderService
 import org.slf4j.Logger
@@ -23,6 +24,6 @@ class CustomAccessDeniedHandler(
     ) {
         log.error("[권한 오류] ${accessDeniedException.message}");
         val exceptionMessage = request.getAttribute(JwtConfig.EXCEPTION).toString()
-        jwtProviderService.setResponseMessage(false, response, exceptionMessage)
+        jwtProviderService.setResponseMessage(false, response, ErrorCode.ACCESS_DENIED, exceptionMessage)
     }
 }

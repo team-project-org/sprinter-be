@@ -1,5 +1,6 @@
 package hackathon.sprinter.jwt.handler
 
+import hackathon.sprinter.configure.dto.ErrorCode
 import hackathon.sprinter.jwt.config.JwtConfig
 import hackathon.sprinter.jwt.service.JwtProviderService
 import org.slf4j.Logger
@@ -23,6 +24,6 @@ class CustomAuthenticationEntryPoint(
     ) {
         log.warn("[인증 오류] ${authException.message}")
         val exceptionMessage = request.getAttribute(JwtConfig.EXCEPTION).toString()
-        jwtProviderService.setResponseMessage(false, response, exceptionMessage)
+        jwtProviderService.setResponseMessage(false, response, ErrorCode.AUTHENTICATE_FAIL, exceptionMessage)
     }
 }

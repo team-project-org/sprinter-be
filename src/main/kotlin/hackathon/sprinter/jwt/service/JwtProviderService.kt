@@ -1,5 +1,6 @@
 package hackathon.sprinter.jwt.service
 
+import hackathon.sprinter.configure.dto.ErrorCode
 import hackathon.sprinter.jwt.authenticationfilter.JwtExceptionResponse
 import hackathon.sprinter.jwt.config.JwtConfig
 import hackathon.sprinter.member.model.Member
@@ -135,13 +136,14 @@ class JwtProviderService(
 
     }
 
-    fun setResponseMessage(result: Boolean, response: HttpServletResponse, message: String, memberId: Long? = null) {
+    fun setResponseMessage(result: Boolean, response: HttpServletResponse, errorCode: ErrorCode? = null, message: String, memberId: Long? = null) {
         if (result) response.status = HttpStatus.OK.value()
         else response.status = HttpStatus.BAD_REQUEST.value()
 
         response.contentType = "application/json;charset=UTF-8"
         val content = JSONObject()
             .apply { put("success", result) }
+            .apply { put("error_code", errorCode?.name) }
             .apply { put("message", message) }
             .apply { put("id", memberId) }
         response

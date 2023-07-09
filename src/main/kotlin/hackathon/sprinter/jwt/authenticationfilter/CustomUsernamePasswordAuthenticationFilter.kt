@@ -59,7 +59,7 @@ class CustomUsernamePasswordAuthenticationFilter(
             jwtProviderService.setHeaderOfAccessToken(response, accessToken)
             jwtProviderService.setHeaderOfRefreshToken(response, refreshToken)
 
-            jwtProviderService.setResponseMessage(true, response, "로그인 성공", principal.getId())
+            jwtProviderService.setResponseMessage(true, response, null, "로그인 성공", principal.getId())
             log.info("[인증 성공] JWT 발급")
         } catch (e: Exception) {
             log.error("[토큰 발급 실패]: ${e.message}")
@@ -73,11 +73,8 @@ class CustomUsernamePasswordAuthenticationFilter(
         failed: AuthenticationException?
     ) {
         log.info("[인증 실패]")
-        val failMessage = when (failed!!.message) {
-            ErrorCode.ITEM_NOT_EXIST.name -> ErrorCode.ITEM_NOT_EXIST.name
-            ErrorCode.WRONG_PASSWORD.name -> ErrorCode.WRONG_PASSWORD.name
-            else -> failed.message
-        }
-        jwtProviderService.setResponseMessage(false, response, "로그인 실패: $failMessage")
+        val errorCode = if (failed!!.message!!.startsWith("회원이 존재하지 않습니다.")) ErrorCode.MEMBER_NOT_EXIST
+        else ErrorCode.WRONG_PASSWORD
+        jwtProviderService.setResponseMessage(false, response, errorCode, "로그인 실패")
     }
 }

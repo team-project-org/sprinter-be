@@ -31,8 +31,15 @@ data class JwtException(
 ): CustomClientException(errorCode, msg, throwable)
 
 /** 로그인 에러 */
-data class AuthenticationException(
+data class CAuthenticationException(
     override val errorCode: ErrorCode,
     val msg: String = "",
     val throwable: Throwable? = null,
 ): CustomClientException(errorCode, msg, throwable)
+
+/** 회원이 없는 경우 */
+data class MemberNotFoundException(
+    override val errorCode: ErrorCode,
+    val msg: String = "",
+    val throwable: Throwable? = null
+) : CustomClientException(errorCode, msg, throwable)
