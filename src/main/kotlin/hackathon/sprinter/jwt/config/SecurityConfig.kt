@@ -44,7 +44,6 @@ class SecurityConfig(
                     "/swagger-ui.html",
                     "/swagger/**",
                     "/webjars/**",
-                    "/api/v1/sign-up",
                     "/hello",
                     "/playground",
                 )
