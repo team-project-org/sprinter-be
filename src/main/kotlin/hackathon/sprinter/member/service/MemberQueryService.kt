@@ -14,7 +14,8 @@ import org.springframework.transaction.annotation.Transactional
 class MemberQueryService(
     private val memberRepository: MemberRepository,
 ) {
-    private fun findMemberById(memberId: Long): Member {
+    @Transactional(readOnly = true)
+    fun findMemberById(memberId: Long): Member {
         return memberRepository.findMemberById(memberId)
             ?: throw DataNotFoundException(ITEM_NOT_EXIST, "회원이 존재하지 않습니다.")
     }
@@ -61,7 +62,7 @@ class MemberAssembler(
             id = member.id.toString(),
             username = member.username,
             profile_name = member.profileName,
-            role_type_list = member.roleList.map { it.roleType }
+            role_type_list = member.roles.map { it.roleType }
         )
     }
 }

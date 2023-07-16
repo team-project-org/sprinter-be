@@ -29,6 +29,9 @@ type Query {
 
     """ 포스트 전체 조회 """
     getAllPostList: PostList!
+
+    """ 프로필 자신을 조회 """
+    getMyProfile: ProfileResponse!
 }
 
 type MemberList {
@@ -47,9 +50,9 @@ type PostResponse {
     """ 포스트 제목 """
     title: String!
     """ 포스트 시작일 """
-    start_date: DateTime!
+    start_date: DateTime
     """ 포스트 종료일 """
-    end_date: DateTime!
+    end_date: DateTime
     """ 포스트 주인 """
     owner: MemberResponse
 }
@@ -65,6 +68,76 @@ type MemberResponse {
     role_type_list: [RoleType!]!
 }
 
+type ProfileResponse {
+    """ 프로필 ID """
+    id: ID!
+    """ 회원 ID """
+    member_id: ID!
+    """ 직군 """
+    job_group: JobGroup!
+    """ 직무 """
+    job: Job!
+    """ 경력 """
+    job_level: JobLevel!
+    """ 기술 스택 """
+    job_skills: [JobSkill!]!
+    """ 소속 기관 종류 """
+    affiliation_type: AffiliationType!
+    """ 소속 기관 명 """
+    affiliation: String!
+    """ 경력 """
+    work_experiences: [WorkExperienceResponse!]!
+    """ 프로젝트 경험 """
+    project_experiences: [ProjectExperienceResponse!]!
+    """ 기타 경험 """
+    other_experiences: [OtherExperienceResponse!]!
+    """ 자기소개 """
+    introduction: String!
+    """ 포트폴리오 링크 """
+    portfolio_link: String
+    """ 포트폴리오 파일 업로드 URL """
+    portfolio_file_url: String
+    """ 대표 이미지 업로드 URL """
+    profile_image_url: String
+}
+
+type WorkExperienceResponse {
+    """ 직군 """
+    job_group: JobGroup!
+    """ 직무 """
+    job: Job!
+    """ 회사 명 """
+    company: String!
+    """ 경력 시작 날짜 """
+    start_date: DateTime!
+    """ 경력 종료 날짜 """
+    end_date: DateTime!
+}
+
+type ProjectExperienceResponse {
+    """ 직군 """
+    job_group: JobGroup!
+    """ 직무 """
+    job: Job!
+    """ 프로젝트 명 """
+    project_name: String!
+    """ 프로젝트 시작 날짜 """
+    start_date: DateTime!
+    """ 프로젝트 종료 날짜 """
+    end_date: DateTime!
+}
+
+type OtherExperienceResponse {
+    """ 활동명 """
+    activity_name: String!
+    """ 시작 날짜 """
+    start_date: DateTime!
+    """ 종료 날짜 """
+    end_date: DateTime!
+    """ 역할 """
+    role: String!
+}
+
 type Mutation {
     """ 회원 생성 """
     createMember(input: SignupInput!): ID!
@@ -72,6 +145,8 @@ type Mutation {
     createPost(input: CreatePostInput!): ID!
     """ 회원 프로필 네임 수정 """
     updateProfileName(input: UpdateProfileNameInput!): ID!
+    """ 프로필 생성 (성공 시 회원 아이디 반환) """
+    createMemberProfile(input: CreateProfileInput!): ID!
 }
 
 input SignupInput {
@@ -102,12 +177,202 @@ input CreatePostInput {
     title: String!
     """ 회원 USERNAME """
     owner_username: String!
-    """ 포스트 시작 Unix Second """
-    start_date: Long!
-    """ 포스트 종료 Unix Second """
-    end_date: Long!
+    """ 포스트 시작 """
+    start_date: DateTime
+    """ 포스트 종료 """
+    end_date: DateTime
 }
+
+input CreateProfileInput {
+    """ 직군 """
+    job_group: JobGroup!
+    """ 직무 """
+    job: Job!
+    """ 경력 """
+    job_level: JobLevel!
+    """ 기술 스택 """
+    job_skills: [JobSkill!]!
+    """ 소속 기관 종류 """
+    affiliation_type: AffiliationType!
+    """ 소속 기관 명 """
+    affiliation: String!
+    """ 경력 """
+    work_experiences: [WorkExperienceInput!]!
+    """ 프로젝트 경험 """
+    project_experiences: [ProjectExperienceInput!]!
+    """ 기타 경험 """
+    other_experiences: [OtherExperienceInput!]!
+    """ 자기소개 """
+    introduction: String!
+    """ 포트폴리오 링크 """
+    portfolio_link: String
+    """ 포트폴리오 파일 업로드 URL """
+    portfolio_file_url: String
+    """ 대표 이미지 업로드 URL """
+    profile_image_url: String
+}
+
+input WorkExperienceInput {
+    """ 직군 """
+    job_group: JobGroup!
+    """ 직무 """
+    job: Job!
+    """ 회사 명 """
+    company: String!
+    """ 경력 시작 날짜 """
+    start_date: DateTime!
+    """ 경력 종료 날짜 """
+    end_date: DateTime!
+}
+
+input ProjectExperienceInput {
+    """ 직군 """
+    job_group: JobGroup!
+    """ 직무 """
+    job: Job!
+    """ 프로젝트 명 """
+    project_name: String!
+    """ 프로젝트 시작 날짜 """
+    start_date: DateTime!
+    """ 프로젝트 종료 날짜 """
+    end_date: DateTime!
+}
+
+input OtherExperienceInput {
+    """ 활동명 """
+    activity_name: String!
+    """ 시작 날짜 """
+    start_date: DateTime!
+    """ 종료 날짜 """
+    end_date: DateTime!
+    """ 역할 """
+    role: String!
+}
+
 
 enum RoleType {
     ROLE_USER, ROLE_ADMIN
+}
+
+enum AffiliationType {
+    """ 회사 """
+    COMPANY
+    """ 대학교 """
+    UNIVERSITY
+    """ 고등학교 """
+    HIGH_SCHOOL
+    """ 없음 """
+    NONE
+}
+
+enum JobLevel {
+    """ 경력 무관 """
+    IRRELEVANT
+    """ 학생 """
+    STUDENT
+    """ 인턴 """
+    INTERN
+    """ 신입 """
+    BEGINNER
+    """ 1~3년 """
+    JUNIOR
+    """ 4~8년 """
+    MIDDLE
+    """ 9년 이상 """
+    SENIOR
+    """ 리더 """
+    TOP
+}
+
+enum JobGroup {
+    """ 개발 """
+    DEVELOPER
+    """ 게임개발 """
+    GAME_DEVELOPER
+    """ 디자인 """
+    DESIGN
+    """ 기획 """
+    PRODUCT
+}
+
+enum Job {
+    """ 벡엔드/서버 개발자 """
+    BACKEND_DEVELOPER
+    """ 프론트엔드/웹퍼블리셔 개발자 """
+    FRONTEND_DEVELOPER
+    """ 안드로이드 개발자 """
+    ANDROID_DEVELOPER
+    """ "IOS 개발자") """
+    IOS_DEVELOPER
+
+    """ 게임 서버 개발자 """
+    GAME_SERVER_DEVELOPER
+    """ 게임 클라이언트 개발자 """
+    GAME_CLIENT_DEVELOPER
+    """ "게임 기획자") """
+    GAME_PRODUCT_OWNER
+
+    """ 프로덕트 디자이너 """
+    PRODUCT_DESIGNER
+    """ 웹/앱 디자이너 """
+    WEB_APP_DESIGNER
+    """ "그래픽 디자이너") """
+    GRAPHICS_DESIGNER
+
+    """ 서비스 기획자 """
+    SERVICE_OWNER
+    """ PO/PM """
+    PO_PM
+    """ 사업개발 기획자 """
+    BUSINESS_DEVELOPMENT_PLANNER
+}
+
+enum JobSkill {
+    """ Photoshop """
+    Photoshop
+    """ MS-Office """
+    MSOffice
+    """ Google Analytics """
+    GoogleAnalytics
+    """ Illustrator """
+    Illustrator
+    """ Python """
+    Python
+    """ AWS """
+    AWS
+    """ JavaScript """
+    JavaScript
+    """ React """
+    React
+    """ Java """
+    Java
+    """ TypeScript """
+    TypeScript
+    """ Figma """
+    Figma
+    """ MySQL """
+    MySQL
+    """ Node.js """
+    NodeJs
+    """ Git """
+    Git
+    """ HTML/CSS """
+    HtmlCss
+    """ SQL """
+    SQL
+    """ Kotlin """
+    Kotlin
+    """ Github """
+    Github
+    """ Docker """
+    Docker
+    """ Spring """
+    Spring
+    """ React Native """
+    ReactNative
+}
+
+enum TagType {
+    """ 직무 스킬 키워드 """
+    JOB_SKILL_KEYWORD
 }

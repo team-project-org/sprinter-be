@@ -1,11 +1,10 @@
 package hackathon.sprinter.util
 
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
+import java.time.*
 import java.util.*
 
 const val ASIA_SEOUL = "Asia/Seoul"
+const val SEOUL_OFFSET = "+09:00"
 fun currentKSTDate(): Date =
     Date(
         OffsetDateTime
@@ -30,3 +29,6 @@ fun plusKSTDate(year: Long? = 0, month: Long? = 0, day: Long? = 0, min: Long? = 
             .toInstant()
             .toEpochMilli()
     )
+
+fun convertLocalDateToOffsetDateTime(date: LocalDate): OffsetDateTime =
+    OffsetDateTime.of(LocalDateTime.of(date, LocalTime.MIN), ZoneOffset.of(SEOUL_OFFSET))

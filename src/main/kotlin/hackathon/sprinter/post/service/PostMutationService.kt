@@ -3,9 +3,9 @@ package hackathon.sprinter.post.service
 import hackathon.sprinter.member.service.MemberQueryService
 import hackathon.sprinter.post.model.MemberPost
 import hackathon.sprinter.post.model.Post
-import hackathon.sprinter.util.convertToKSTDate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.OffsetDateTime
 
 @Service
 class PostMutationService(
@@ -14,15 +14,15 @@ class PostMutationService(
     @Transactional
     fun createPost(
         title: String,
-        startDate: Long,
-        endDate: Long,
+        startDate: OffsetDateTime?,
+        endDate: OffsetDateTime?,
         ownerUsername: String
     ): Post {
         val owner = memberQueryService.findMemberByUsername(ownerUsername)
         val post = Post(
             title = title,
-            startDate = convertToKSTDate(startDate),
-            endDate = convertToKSTDate(endDate),
+            startDate = startDate,
+            endDate = endDate,
             memberPostList = mutableListOf(),
         )
         val memberPost = MemberPost(owner, post)

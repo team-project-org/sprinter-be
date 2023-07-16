@@ -45,11 +45,32 @@ class AwsS3UploadService(
             "" -> "image/jpeg"
             else -> throw IllegalArgumentException("${extension}은 이미지 확장자가 아닙니다.")
         }
-        val metadata = ObjectMetadata()
         val bytes = IOUtils.toByteArray(file.inputStream)
+        val metadata = getMetadata(postfix, bytes)
+        return putObject(bucketName, fileName, ByteArrayInputStream(bytes), metadata)
+    }
+
+    @Transactional
+    fun uploadFileS3(file: MultipartFile): AwsS3ObjectDto {
+        val fileName = file.originalFilename ?: "null"
+        val postfix = when (val extension = fileName.substringAfter(".")) {
+            "pdf" -> "pdf"
+            else -> extension
+        }
+        val bytes = IOUtils.toByteArray(file.inputStream)
+        val metadata = getMetadata(postfix, bytes)
+        return putObject(bucketName, fileName, ByteArrayInputStream(bytes), metadata)
+    }
+
+    private fun getMetadata(
+        postfix: String,
+        bytes: ByteArray
+    ): ObjectMetadata {
+        val metadata = ObjectMetadata()
+        metadata.contentDisposition = "inline"
         metadata.contentType = "application/$postfix"
         metadata.contentLength = bytes.size.toLong()
-        return putObject(bucketName, fileName, ByteArrayInputStream(bytes), metadata)
+        return metadata
     }
 
     fun putObject(

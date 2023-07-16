@@ -6,8 +6,8 @@ import hackathon.sprinter.configure.DataNotFoundException
 import hackathon.sprinter.configure.ParameterInvalidException
 import hackathon.sprinter.configure.dto.ErrorCode
 import hackathon.sprinter.member.model.Member
-import hackathon.sprinter.member.model.RoleType
 import hackathon.sprinter.member.repository.MemberRepository
+import hackathon.sprinter.util.RoleType
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -78,7 +78,7 @@ class MemberCreator(
             password = encodePassword,
             token = "",
             profileName = input.profile_name,
-            roleList = mutableListOf()
+            roles = mutableListOf()
         )
     }
 }

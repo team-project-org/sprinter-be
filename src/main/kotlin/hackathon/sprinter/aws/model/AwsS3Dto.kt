@@ -5,6 +5,7 @@ data class UploadResponse(
     val id: Long,
     val url: String,
     val name: String,
+    val memberId: Long,
 )
 
 data class AwsS3ObjectDto(

@@ -125,7 +125,13 @@ tasks.withType<com.netflix.graphql.dgs.codegen.gradle.GenerateJavaTask> {
     language = "kotlin"
     generateKotlinNullableClasses = false
     typeMapping = mutableMapOf(
-        "RoleType" to "hackathon.sprinter.member.model.RoleType",
+        "DateTime" to "java.time.OffsetDateTime",
         "Long" to "kotlin.Long",
+        "RoleType" to "hackathon.sprinter.util.RoleType",
+        "JobLevel" to "hackathon.sprinter.util.JobLevel",
+        "JobGroup" to "hackathon.sprinter.util.JobGroup",
+        "Job" to "hackathon.sprinter.util.Job",
+        "JobSkill" to "hackathon.sprinter.util.JobSkill",
+        "AffiliationType" to "hackathon.sprinter.util.AffiliationType",
     )
 }

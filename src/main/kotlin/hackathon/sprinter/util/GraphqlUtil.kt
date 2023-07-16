@@ -1,9 +1,12 @@
 package hackathon.sprinter.util
 
-import com.netflix.dgs.codegen.generated.types.MemberResponse
-import com.netflix.dgs.codegen.generated.types.PostResponse
+import com.netflix.dgs.codegen.generated.types.*
 import hackathon.sprinter.member.model.Member
 import hackathon.sprinter.post.model.Post
+import hackathon.sprinter.profile.model.OtherExperience
+import hackathon.sprinter.profile.model.Profile
+import hackathon.sprinter.profile.model.ProjectExperience
+import hackathon.sprinter.profile.model.WorkExperience
 
 fun Post.toGqlSchema(): PostResponse {
     return PostResponse(
@@ -20,6 +23,55 @@ fun Member.toGqlSchema(): MemberResponse {
         id = this.id.toString(),
         username = this.username,
         profile_name = this.profileName,
-        role_type_list = this.roleList.map { it.roleType },
+        role_type_list = this.roles.map { it.roleType },
+    )
+}
+
+fun Profile.toGqlSchema(): ProfileResponse {
+    return ProfileResponse(
+        id = this.id.toString(),
+        member_id = this.member?.id.toString(),
+        job_group = this.jobGroup,
+        job = this.job,
+        job_level = this.jobLevel,
+        job_skills = this.jobSkills.split(", ").map { JobSkill.find(it) },
+        affiliation_type = this.affiliationType,
+        affiliation = this.affiliation,
+        work_experiences = this.workExperiences.map { it.toGqlSchema() },
+        project_experiences = this.projectExperiences.map { it.toGqlSchema() },
+        other_experiences = this.otherExperiences.map { it.toGqlSchema() },
+        introduction = this.introduction,
+        portfolio_link = this.portfolioLink,
+        portfolio_file_url = this.portfolioFileUrl,
+        profile_image_url = this.profileImageUrl,
+    )
+}
+
+fun WorkExperience.toGqlSchema(): WorkExperienceResponse {
+    return WorkExperienceResponse(
+        job_group = this.jobGroup,
+        job = this.job,
+        company = this.company,
+        start_date = convertLocalDateToOffsetDateTime(this.startDate),
+        end_date = convertLocalDateToOffsetDateTime(this.endDate),
+    )
+}
+
+fun ProjectExperience.toGqlSchema(): ProjectExperienceResponse {
+    return ProjectExperienceResponse(
+        job_group = this.jobGroup,
+        job = this.job,
+        project_name = this.projectName,
+        start_date = convertLocalDateToOffsetDateTime(this.startDate),
+        end_date = convertLocalDateToOffsetDateTime(this.endDate),
+    )
+}
+
+fun OtherExperience.toGqlSchema(): OtherExperienceResponse {
+    return OtherExperienceResponse(
+        activity_name = this.activityName,
+        role = this.role,
+        start_date = convertLocalDateToOffsetDateTime(this.startDate),
+        end_date = convertLocalDateToOffsetDateTime(this.endDate),
     )
 }
