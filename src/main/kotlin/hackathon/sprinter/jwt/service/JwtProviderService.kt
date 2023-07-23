@@ -3,6 +3,7 @@ package hackathon.sprinter.jwt.service
 import hackathon.sprinter.configure.dto.ErrorCode
 import hackathon.sprinter.jwt.authenticationfilter.JwtExceptionResponse
 import hackathon.sprinter.jwt.config.JwtConfig
+import hackathon.sprinter.jwt.config.JwtConfig.Companion.REFRESH_TOKEN_REFRESH_DAY
 import hackathon.sprinter.member.model.Member
 import hackathon.sprinter.member.service.MemberQueryService
 import hackathon.sprinter.util.currentKSTDate
@@ -96,7 +97,7 @@ class JwtProviderService(
     }
 
     fun checkExpireInSevenDayToken(token: String): Boolean {
-        return parseToken(token).body.expiration.before(plusKSTDate(day = 7))
+        return parseToken(token).body.expiration.before(plusKSTDate(day = REFRESH_TOKEN_REFRESH_DAY))
     }
 
     fun getUsername(token: String): String {

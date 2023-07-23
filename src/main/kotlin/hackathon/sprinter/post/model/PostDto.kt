@@ -1,14 +1,14 @@
 package hackathon.sprinter.post.model
 
 import hackathon.sprinter.member.model.Member
-import hackathon.sprinter.member.model.RoleType
+import hackathon.sprinter.util.RoleType
 import java.time.OffsetDateTime
 
 data class PostDto(
     val id: String,
     val title: String,
-    val startDate: OffsetDateTime,
-    val endDate: OffsetDateTime,
+    val startDate: OffsetDateTime?,
+    val endDate: OffsetDateTime?,
     val owner: MemberDto?,
 ) {
     companion object {
@@ -37,7 +37,7 @@ data class MemberDto(
                 id = member.id,
                 username = member.username,
                 profileName = member.profileName,
-                roleTypeList = member.roleList.map { it.roleType }
+                roleTypeList = member.roles.map { it.roleType }
             )
         }
     }

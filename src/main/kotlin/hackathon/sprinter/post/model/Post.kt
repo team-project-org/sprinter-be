@@ -6,10 +6,11 @@ import java.time.OffsetDateTime
 import javax.persistence.*
 
 @Entity
+@Table(name ="posts")
 class Post(
     @Column(nullable = false) val title: String,
-    @Column(nullable = false) val startDate: OffsetDateTime,
-    @Column(nullable = false) val endDate: OffsetDateTime,
+    @Column(nullable = false) val startDate: OffsetDateTime?,
+    @Column(nullable = false) val endDate: OffsetDateTime?,
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     val memberPostList: MutableList<MemberPost> = mutableListOf(),
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
