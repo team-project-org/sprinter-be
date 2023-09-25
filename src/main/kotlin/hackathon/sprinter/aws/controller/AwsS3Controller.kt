@@ -12,12 +12,12 @@ import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @Api("AWS")
-@RequestMapping("/api/aws")
+@RequestMapping("/api/aws/v1")
 class AwsS3Controller(
     private val awsS3Service: AwsS3Service,
     private val authenticateService: MemberAuthenticateService,
 ) {
-    @PostMapping("/v1/s3")
+    @PostMapping("/s3")
     fun uploadFileS3(@RequestParam file: MultipartFile): ResponseEntity<UploadResponse> {
         val memberId = authenticateService.findMemberPkByAuthentication()
         return try {
@@ -36,7 +36,7 @@ class AwsS3Controller(
         }
     }
 
-    @DeleteMapping("/v1/s3")
+    @DeleteMapping("/s3")
     fun deleteFileS3(@RequestParam url: String): ResponseEntity<ResponseData<String>> {
         return try {
             val memberId = authenticateService.findMemberPkByAuthentication()

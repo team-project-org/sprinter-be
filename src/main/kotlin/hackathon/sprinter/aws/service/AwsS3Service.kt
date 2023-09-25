@@ -42,29 +42,19 @@ class AwsS3Service(
     @Transactional
     fun uploadFileS3(file: MultipartFile, memberId: Long): AwsS3ObjectDto {
         val fileName = file.originalFilename ?: "none"
-        val postfix = when (val extension = getExtension(fileName)) {
-            "jpg" -> "image/jpeg"
-            "jpeg" -> "image/jpeg"
-            "png" -> "image/png"
-            "pdf" -> "pdf"
-            "" -> ""
-            else -> throw IllegalArgumentException("`${extension}`은 올바른 확장자가 아닙니다.")
-        }
         val bytes = IOUtils.toByteArray(file.inputStream)
-        val metadata = makeMetadata(postfix, bytes, memberId)
+        val metadata = makeMetadata(file.contentType ?: "", bytes, memberId)
         return putObject(bucketName, fileName, ByteArrayInputStream(bytes), metadata)
     }
 
-    private fun getExtension(fileName: String): String = fileName.split(".").last()
-
     private fun makeMetadata(
-        postfix: String,
+        contentType: String,
         bytes: ByteArray,
         memberId: Long,
     ): ObjectMetadata {
         val metadata = ObjectMetadata()
         metadata.contentDisposition = "inline"
-        metadata.contentType = "application/$postfix"
+        metadata.contentType = contentType
         metadata.contentLength = bytes.size.toLong()
         metadata.userMetadata = mutableMapOf(USER_METADATA_KEY to memberId.toString())
         return metadata
@@ -77,7 +67,7 @@ class AwsS3Service(
         metadata: ObjectMetadata
     ): AwsS3ObjectDto {
         val uuid = generateUniqueKey(fileName)
-        val url = getUrl(uuid)
+        val url = folderName + uuid
         logger.info("UPLOAD FILE TO URL: $url")
 
         try {
@@ -112,16 +102,11 @@ class AwsS3Service(
     }
 
     private fun generateUniqueKey(originalFilename: String): String {
-        return "${UUID.randomUUID()}-$originalFilename"
-    }
-
-    private fun getUrl(uuid: String): String {
         val currentTime = OffsetDateTime.now()
         val year = currentTime.year
         val month = currentTime.month
         val day = currentTime.dayOfMonth
-
-        return "$folderName/$year/$month/$day/$uuid"
+        return "$year$month$day-$originalFilename-${UUID.randomUUID()}"
     }
 
     @Transactional
