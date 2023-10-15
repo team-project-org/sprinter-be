@@ -106,7 +106,10 @@ class AwsS3Service(
         val year = currentTime.year
         val month = currentTime.month
         val day = currentTime.dayOfMonth
-        return "$year$month$day-$originalFilename-${UUID.randomUUID()}"
+        val hour = currentTime.hour
+        val minute = currentTime.minute
+        val second = currentTime.second
+        return "$year$month$day-H$hour:$minute:${second}_${originalFilename}"
     }
 
     @Transactional
