@@ -1,15 +1,16 @@
 package hackathon.sprinter.aws.service
 
+import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.*
 import com.amazonaws.services.securitylake.model.S3Exception
 import com.amazonaws.util.IOUtils
-import hackathon.sprinter.aws.config.AwsS3Client
 import hackathon.sprinter.aws.model.AwsS3Object
 import hackathon.sprinter.aws.model.AwsS3ObjectDto
 import hackathon.sprinter.aws.repository.AwsS3Repository
 import hackathon.sprinter.configure.ParameterInvalidException
 import hackathon.sprinter.configure.dto.ErrorCode
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -21,8 +22,8 @@ import java.util.*
 
 @Service
 class AwsS3Service(
+    @Qualifier("awsS3") private val awsS3Client: AmazonS3,
     private val awsS3Repository: AwsS3Repository,
-    private val awsS3Client: AwsS3Client,
 ) {
     companion object {
         private const val USER_METADATA_KEY = "x-amz-meta-member_id"
@@ -90,7 +91,6 @@ class AwsS3Service(
         metadata: ObjectMetadata
     ) {
         awsS3Client
-            .getAwsS3Client()
             .putObject(
                 PutObjectRequest(
                     bucketName,
@@ -145,7 +145,6 @@ class AwsS3Service(
     }
 
     private fun getFileUserMetadataValue(key: String) = awsS3Client
-        .getAwsS3Client()
         .getObject(
             GetObjectRequest(
                 bucketName,
@@ -157,7 +156,6 @@ class AwsS3Service(
 
     private fun deleteFileFromS3(key: String) {
         awsS3Client
-            .getAwsS3Client()
             .deleteObject(
                 DeleteObjectRequest(
                     bucketName,

@@ -5,6 +5,7 @@ import hackathon.sprinter.aws.service.AwsS3Service
 import hackathon.sprinter.jwt.controller.ResponseData
 import hackathon.sprinter.member.service.MemberAuthenticateService
 import io.swagger.annotations.Api
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -14,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile
 @Api("AWS")
 @RequestMapping("/api/aws/v1")
 class AwsS3Controller(
-    private val awsS3Service: AwsS3Service,
+    @Qualifier("s3Service") private val awsS3Service: AwsS3Service,
     private val authenticateService: MemberAuthenticateService,
 ) {
     @PostMapping("/s3")

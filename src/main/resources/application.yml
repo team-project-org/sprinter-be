@@ -70,3 +70,11 @@ aws:
     access-key: local_access_key
     secret-key: local_secret_key
     region: local_region
+  s3:
+    minio:
+      region: ap-northeast-2
+      endpoint: "http://localhost:9094"
+      accessKey: "1234567890"
+      secretKey: "1234567890"
+    bucket:
+      sprinter-img-bucket: sprinter-img-bucket
