@@ -1,7 +1,11 @@
 package hackathon.sprinter.aws.service
 
 import com.amazonaws.services.s3.AmazonS3
-import com.amazonaws.services.s3.model.*
+import com.amazonaws.services.s3.model.DeleteObjectRequest
+import com.amazonaws.services.s3.model.GetObjectRequest
+import com.amazonaws.services.s3.model.ObjectMetadata
+import com.amazonaws.services.s3.model.PutObjectRequest
+import com.amazonaws.services.s3.model.StorageClass
 import com.amazonaws.services.securitylake.model.S3Exception
 import com.amazonaws.util.IOUtils
 import hackathon.sprinter.aws.model.AwsS3Object
@@ -10,19 +14,14 @@ import hackathon.sprinter.aws.repository.AwsS3Repository
 import hackathon.sprinter.configure.ParameterInvalidException
 import hackathon.sprinter.configure.dto.ErrorCode
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayInputStream
 import java.io.InputStream
 import java.time.OffsetDateTime
-import java.util.*
 
-@Service
-class AwsS3Service(
-    @Qualifier("awsS3") private val awsS3Client: AmazonS3,
+open class AwsS3Service(
+    private val awsS3Client: AmazonS3,
     private val awsS3Repository: AwsS3Repository,
 ) {
     companion object {
@@ -40,7 +39,6 @@ class AwsS3Service(
 
     private val logger = LoggerFactory.getLogger(this::class.simpleName)
 
-    @Transactional
     fun uploadFileS3(file: MultipartFile, memberId: Long): AwsS3ObjectDto {
         val fileName = file.originalFilename ?: "none"
         val bytes = IOUtils.toByteArray(file.inputStream)
@@ -61,7 +59,7 @@ class AwsS3Service(
         return metadata
     }
 
-    fun putObject(
+    private fun putObject(
         bucketName: String,
         fileName: String,
         inputStream: InputStream,
@@ -112,7 +110,6 @@ class AwsS3Service(
         return "$year$month$day-H$hour:$minute:${second}_${originalFilename}"
     }
 
-    @Transactional
     fun deleteFileS3(url: String, memberId: String): Boolean {
         val key = convertUrlToS3Key(url)
         validateUserMetadata(key, memberId)

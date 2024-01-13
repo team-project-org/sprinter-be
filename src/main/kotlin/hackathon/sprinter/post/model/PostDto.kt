@@ -3,6 +3,7 @@ package hackathon.sprinter.post.model
 import hackathon.sprinter.member.model.Member
 import hackathon.sprinter.util.RoleType
 import java.time.OffsetDateTime
+import java.util.LinkedList
 
 data class PostDto(
     val id: String,
@@ -11,6 +12,25 @@ data class PostDto(
     val endDate: OffsetDateTime?,
     val owner: MemberDto?,
 ) {
+    private val queue = LinkedList<Long>()
+    init {
+        println("PostDto init")
+        queue.addAll(listOf(1L, 2L, 3L, 4L, 5L))
+        for (i in 0..5) {
+            println("i: $i")
+        }
+        val name = String
+        val myTallLength = 123
+        println(myTallLength)
+
+        val queue1 = getQueue()
+        queue1.map { println(it) }
+    }
+
+    fun getQueue(): LinkedList<Long> {
+        return queue
+    }
+
     companion object {
         fun from(post: Post): PostDto {
             return PostDto(

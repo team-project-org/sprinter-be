@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
 import org.springframework.context.annotation.Profile
-import javax.annotation.PostConstruct
 
 @Configuration
 @Profile("local", "test")
@@ -33,14 +32,6 @@ class AwsS3MockConfiguration {
 
     @Value("\${aws.s3.bucket.sprinter-img-bucket}")
     private val sprinterImgBucket: String = ""
-
-    @PostConstruct
-    fun setUpBucket() {
-        val awsS3Client = awsMockS3Client()
-        if (!awsS3Client.doesBucketExistV2(sprinterImgBucket)) {
-            awsS3Client.createBucket(sprinterImgBucket)
-        }
-    }
 
     @Bean("awsS3")
     @Primary

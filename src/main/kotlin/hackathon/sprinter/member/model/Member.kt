@@ -6,7 +6,17 @@ import hackathon.sprinter.post.model.Post
 import hackathon.sprinter.profile.model.Profile
 import hackathon.sprinter.util.RoleType
 import java.io.Serializable
-import javax.persistence.*
+import javax.persistence.CascadeType
+import javax.persistence.Column
+import javax.persistence.ElementCollection
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.OneToMany
+import javax.persistence.OneToOne
+import javax.persistence.Table
 
 @Entity
 @Table(name ="members")
