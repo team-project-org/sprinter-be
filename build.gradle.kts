@@ -3,10 +3,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "2.7.8"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    kotlin("jvm") version "1.6.21"
-    kotlin("plugin.spring") version "1.6.21"
-    kotlin("plugin.jpa") version "1.6.21"
-    kotlin("kapt") version "1.6.10"
+    kotlin("jvm") version "1.9.20"
+    kotlin("plugin.spring") version "1.9.20"
+    kotlin("plugin.jpa") version "1.9.20"
+    kotlin("kapt") version "1.9.20"
     id("org.flywaydb.flyway") version "7.7.3"
     id("com.ewerk.gradle.plugins.querydsl") version "1.0.10"
     id("com.netflix.dgs.codegen") version "5.2.0" apply true
@@ -60,7 +60,6 @@ dependencies {
 
     // DB, FLYWAY
     implementation("mysql:mysql-connector-java:8.0.26")
-//    implementation("org.flywaydb:flyway-core:7.7.3")
 
     // QueryDSL
     implementation("com.querydsl:querydsl-jpa:$queryDslVersion")
