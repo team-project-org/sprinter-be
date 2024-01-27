@@ -43,13 +43,19 @@ enum class JobLevel(level: String) {
 }
 
 enum class JobGroup(group: String) {
+    NONE("직군 미선택"),
     DEVELOPER("개발"),
     GAME_DEVELOPER("게임개발"),
     DESIGN("디자인"),
     PRODUCT("기획"),
 }
 
-enum class Job(name: String) {
+enum class Job(val jobName: String) {
+    NONE("직무 미선택"),
+    DEVELOPER("개발자"),
+    DESIGNER("디자이너"),
+    PM("기획자/마케터"),
+
     BACKEND_DEVELOPER("벡엔드/서버 개발자"),
     FRONTEND_DEVELOPER("프론트엔드/웹퍼블리셔 개발자"),
     ANDROID_DEVELOPER("안드로이드 개발자"),
@@ -66,6 +72,11 @@ enum class Job(name: String) {
     SERVICE_OWNER("서비스 기획자"),
     PO_PM("PO/PM"),
     BUSINESS_DEVELOPMENT_PLANNER("사업개발 기획자"),
+    ;
+
+    companion object {
+        fun find(name: String): Job = entries.find { it.jobName == name } ?: PM
+    }
 }
 
 enum class JobSkill(name: String) {

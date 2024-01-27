@@ -7,13 +7,25 @@ import hackathon.sprinter.util.Job
 import hackathon.sprinter.util.JobGroup
 import hackathon.sprinter.util.JobLevel
 import java.time.LocalDate
-import javax.persistence.*
+import javax.persistence.CascadeType
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
+import javax.persistence.FetchType
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
+import javax.persistence.OneToOne
+import javax.persistence.Table
 
 @Entity
 @Table(name = "profiles")
 class Profile(
-    @OneToOne(fetch = FetchType.LAZY) @JoinColumn(name = "member_id")
-    var member: Member?,
+    @OneToOne(fetch = FetchType.LAZY) @JoinColumn(name = "member_id") var member: Member?,
     @Column(nullable = false) @Enumerated(EnumType.STRING) val jobLevel: JobLevel,
     @Column(nullable = false) @Enumerated(EnumType.STRING) val jobGroup: JobGroup,
     @Column(nullable = false) @Enumerated(EnumType.STRING) val job: Job,
@@ -34,6 +46,9 @@ class Profile(
 
     @OneToMany(cascade = [CascadeType.ALL]) @JoinColumn(name = "profile_id")
     val otherExperiences: MutableList<OtherExperience> = mutableListOf()
+
+    @OneToMany(cascade = [CascadeType.ALL]) @JoinColumn(name = "profile_id")
+    val linkList: MutableList<Link> = mutableListOf()
 }
 
 @Entity
@@ -73,3 +88,16 @@ class OtherExperience(
     val profile: Profile,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long = 0,
 ) : BaseTimeEntity()
+
+@Entity
+@Table(name = "links")
+class Link(
+    @Column val url: String,
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "profile_id") var profile: Profile?,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long = 0L,
+) : BaseTimeEntity() {
+    constructor(url: String) : this(
+        url.trim(),
+        null
+    )
+}
