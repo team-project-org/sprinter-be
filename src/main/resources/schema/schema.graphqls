@@ -32,6 +32,9 @@ type Query {
 
     """ 프로필 자신을 조회 """
     getMyProfile: ProfileResponse!
+
+    """ Mock 회원 목록 조회 """
+    getMockMemberList: MockMemberResponseList!
 }
 
 type MemberList {
@@ -136,6 +139,24 @@ type OtherExperienceResponse {
     end_date: DateTime!
     """ 역할 """
     role: String!
+}
+
+type MockMemberResponseList {
+    total_count: Int!
+    item_list: [MockMemberResponse!]!
+}
+
+type MockMemberResponse {
+    """ 회원 이메일 """
+    email: String!
+    """ 회원 프로필 이름 """
+    name: String!
+    """ 회원 프로필 직군 """
+    job: String!
+    """ 회원 프로필 이미지 URL """
+    profile_image_url: String
+    """ 링크 목록 """
+    portfolio_link_url_list: [String!]!
 }
 
 type Mutation {

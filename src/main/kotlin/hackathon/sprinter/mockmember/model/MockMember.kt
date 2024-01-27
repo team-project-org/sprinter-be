@@ -13,8 +13,26 @@ class MockMember(
     val name: String,
     val job: String,
     val profileImageUrl: String,
-    val plainLinkUrl: String?,
+    val portfolioLinkPlainText: String?,
 ) {
+    val portfolioLinkList: MutableList<String> = mutableListOf()
+
+    companion object {
+        fun from(member: Member, linkList: List<Link>): MockMember {
+            val email = member.username
+            val profileName = member.profileName
+            val profile = member.profile
+
+            return MockMember(
+                email = email,
+                name = profileName,
+                job = profile.job.name,
+                profileImageUrl = profile.profileImageUrl ?: "",
+                portfolioLinkPlainText = null,
+            ).also { it.portfolioLinkList.addAll(linkList.map { it.url }) }
+        }
+    }
+
     fun createRealMemberProfile(): Profile {
         val member = Member(
             username = email,
@@ -22,10 +40,11 @@ class MockMember(
             token = "",
             profileName = name,
             roles = mutableListOf(),
+            isMock = true,
         )
 
         val linkCollection =
-            plainLinkUrl
+            portfolioLinkPlainText
                 ?.split(",")
                 ?.map { Link(it) }
                 ?: emptyList()

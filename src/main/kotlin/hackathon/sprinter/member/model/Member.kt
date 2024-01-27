@@ -25,6 +25,7 @@ class Member(
     @Column(nullable = false) val password: String,
     @Column(nullable = false) var token: String,
     @Column(nullable = false) var profileName: String,
+    @Column(nullable = false) val isMock: Boolean = false,
     @ElementCollection(fetch = FetchType.EAGER) val roles: MutableCollection<Role> = mutableListOf(),
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long = 0L,
 ) : BaseTimeEntity(), Serializable {
@@ -36,7 +37,7 @@ class Member(
     val ownerPostList: MutableList<Post> = mutableListOf()
 
     @OneToOne(mappedBy = "member", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
-    private lateinit var profile: Profile
+    lateinit var profile: Profile
 
     fun updateMyProfile(profile: Profile) {
         profile.member = this

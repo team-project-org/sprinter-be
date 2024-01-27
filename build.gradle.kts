@@ -66,6 +66,9 @@ dependencies {
     kapt("com.querydsl:querydsl-apt:$queryDslVersion:jpa")
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
+    // CSV
+    implementation("org.apache.commons:commons-csv:1.10.0")
+
     // DGS
     implementation("com.graphql-java:graphql-java-extended-scalars")
     implementation(platform("com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:$dgsVersion"))

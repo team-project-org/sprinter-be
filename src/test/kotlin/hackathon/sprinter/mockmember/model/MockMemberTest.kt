@@ -23,7 +23,7 @@ class MockMemberTest(
             name = "테스트계정",
             job = "개발자",
             profileImageUrl = "testProfileImage",
-            plainLinkUrl = "https://ws-pace.tistory.com/, https://github.com/choiwoonsik"
+            portfolioLinkPlainText = "https://ws-pace.tistory.com/, https://github.com/choiwoonsik"
         )
 
         // when
@@ -36,6 +36,7 @@ class MockMemberTest(
         member.username shouldBe "test@test.com"
         member.profileName shouldBe "테스트계정"
         member.password shouldBe ""
+        member.isMock shouldBe true
         profile.job shouldBe DEVELOPER
     }
 
@@ -47,7 +48,7 @@ class MockMemberTest(
             name = "테스트계정",
             job = "개발자",
             profileImageUrl = "testProfileImage",
-            plainLinkUrl = "https://ws-pace.tistory.com/, https://github.com/choiwoonsik"
+            portfolioLinkPlainText = "https://ws-pace.tistory.com/, https://github.com/choiwoonsik"
         )
 
         // when
@@ -62,17 +63,15 @@ class MockMemberTest(
         // then
         val memberEntity = memberJpaRepository.findAll().first { it.profileName == "테스트계정" }
         memberEntity.username shouldBe mockMember.email
-        println(memberEntity.id)
+        memberEntity.isMock shouldBe true
 
         val profileEntity = profileJpaRepository.findAll().first { it.member!!.id == memberEntity.id }
         profileEntity.job shouldBe DEVELOPER
         profileEntity.linkList.size shouldBe 2
         profileEntity.introduction.isBlank() shouldBe true
-        println(profileEntity.id)
 
         val links = linkJpaRepository.findAll().filter { it.profile?.id == profileEntity.id }
         links.size shouldBe 2
-        println(links.map { it.id })
         links[0].url shouldBe "https://ws-pace.tistory.com/"
         links[1].url shouldBe "https://github.com/choiwoonsik"
     }
