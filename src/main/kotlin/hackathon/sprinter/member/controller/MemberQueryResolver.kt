@@ -2,6 +2,7 @@ package hackathon.sprinter.member.controller
 
 import com.netflix.dgs.codegen.generated.types.MemberList
 import com.netflix.dgs.codegen.generated.types.MemberResponse
+import com.netflix.dgs.codegen.generated.types.MockMemberResponseList
 import com.netflix.dgs.codegen.generated.types.PostList
 import com.netflix.graphql.dgs.DgsComponent
 import com.netflix.graphql.dgs.DgsQuery
@@ -9,6 +10,7 @@ import com.netflix.graphql.dgs.InputArgument
 import hackathon.sprinter.configure.dto.ID
 import hackathon.sprinter.member.service.MemberAuthenticateService
 import hackathon.sprinter.member.service.MemberQueryService
+import hackathon.sprinter.util.toGqlSchema
 import org.springframework.security.access.prepost.PreAuthorize
 
 
@@ -91,5 +93,17 @@ class MemberQueryResolver(
             total_count = ownerPostListResponse.size,
             item_list = ownerPostListResponse
         )
+    }
+
+    @DgsQuery
+    fun getMockMemberList(): MockMemberResponseList {
+        return memberQueryService.getMockMemberList()
+            .map { it.toGqlSchema() }
+            .let {
+                MockMemberResponseList(
+                    total_count = it.size,
+                    item_list = it
+                )
+            }
     }
 }

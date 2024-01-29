@@ -6,6 +6,8 @@ import hackathon.sprinter.configure.DataNotFoundException
 import hackathon.sprinter.configure.dto.ErrorCode.ITEM_NOT_EXIST
 import hackathon.sprinter.member.model.Member
 import hackathon.sprinter.member.repository.MemberRepository
+import hackathon.sprinter.mockmember.model.MockMember
+import hackathon.sprinter.profile.repository.mysql.LinkRepository
 import hackathon.sprinter.util.toGqlSchema
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class MemberQueryService(
     private val memberRepository: MemberRepository,
+    private val linkRepository: LinkRepository,
 ) {
     @Transactional(readOnly = true)
     fun findMemberById(memberId: Long): Member {
@@ -45,6 +48,24 @@ class MemberQueryService(
     @Transactional(readOnly = true)
     fun getOwnerPostResponseList(memberId: Long): List<PostResponse> {
         return findMemberById(memberId).ownerPostList.map { it.toGqlSchema() }
+    }
+
+    @Transactional(readOnly = true)
+    fun getMockMemberList(): List<MockMember> {
+        val mockMemberList = memberRepository.findMockMember()
+        val profileIdList = mockMemberList.map { it.profile.id }
+
+        val profileLinkListMap = linkRepository
+            .findPortfolioLinkListInProfileIds(profileIdList)
+            .groupBy { it.profile!!.id }
+
+        return mockMemberList.map {
+            val linkList = profileLinkListMap[it.profile.id] ?: emptyList()
+            MockMember.from(
+                member = it,
+                linkList = linkList
+            )
+        }
     }
 }
 

@@ -2,6 +2,7 @@ package hackathon.sprinter.member.repository
 
 import hackathon.sprinter.member.model.Member
 import hackathon.sprinter.member.model.QMember.member
+import hackathon.sprinter.profile.model.QProfile.profile
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
@@ -34,6 +35,14 @@ class MemberRepository(
     fun findAllMember(): List<Member> {
         return from(member)
             .orderBy(member.dateCreated.desc())
+            .fetch()
+    }
+
+    fun findMockMember(): List<Member> {
+        return from(member)
+            .leftJoin(member.profile, profile).fetchJoin()
+            .where(member.isMock.eq(true))
+            .where(member.dateDeleted.isNull)
             .fetch()
     }
 }
