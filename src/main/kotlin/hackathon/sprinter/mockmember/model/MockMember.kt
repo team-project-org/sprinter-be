@@ -1,5 +1,6 @@
 package hackathon.sprinter.mockmember.model
 
+import hackathon.sprinter.member.dto.MockMemberInput
 import hackathon.sprinter.member.model.Member
 import hackathon.sprinter.profile.model.Link
 import hackathon.sprinter.profile.model.Profile
@@ -18,6 +19,15 @@ class MockMember(
     val portfolioLinkList: MutableList<String> = mutableListOf()
 
     companion object {
+        fun from(mockMemberInput: MockMemberInput): MockMember {
+            return MockMember(
+                email = mockMemberInput.email,
+                name = mockMemberInput.name,
+                job = mockMemberInput.job,
+                profileImageUrl = mockMemberInput.profileImageUrl,
+                portfolioLinkPlainText = mockMemberInput.portfolioLinkPlainText,
+            )
+        }
         fun from(member: Member, linkList: List<Link>): MockMember {
             val email = member.username
             val profileName = member.profileName

@@ -1,11 +1,11 @@
 package hackathon.sprinter.member.creator
 
-import com.netflix.dgs.codegen.generated.types.MockMemberInput
 import com.netflix.dgs.codegen.generated.types.SignupInput
 import com.netflix.dgs.codegen.generated.types.UpdateProfileNameInput
 import hackathon.sprinter.configure.DataNotFoundException
 import hackathon.sprinter.configure.ParameterInvalidException
 import hackathon.sprinter.configure.dto.ErrorCode
+import hackathon.sprinter.member.dto.MockMemberInput
 import hackathon.sprinter.member.model.Member
 import hackathon.sprinter.member.repository.MemberRepository
 import hackathon.sprinter.mockmember.service.MockMemberMutationService
