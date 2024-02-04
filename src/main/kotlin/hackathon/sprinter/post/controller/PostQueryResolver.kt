@@ -1,5 +1,6 @@
 package hackathon.sprinter.post.controller
 
+import com.netflix.dgs.codegen.generated.types.MockPostResponseList
 import com.netflix.dgs.codegen.generated.types.PostList
 import com.netflix.graphql.dgs.DgsComponent
 import com.netflix.graphql.dgs.DgsQuery
@@ -20,5 +21,17 @@ class PostQueryResolver(
             allPost.size,
             allPost.map { it.toGqlSchema() }
         )
+    }
+
+    @DgsQuery
+    fun getMockPostList(): MockPostResponseList {
+        return postQueryService.getAllMockPostList()
+            .map { it.toGqlSchema() }
+            .let {
+                MockPostResponseList(
+                    total_count = it.size,
+                    item_list = it
+                )
+            }
     }
 }
