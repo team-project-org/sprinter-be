@@ -2,6 +2,7 @@ package hackathon.sprinter.util
 
 import com.netflix.dgs.codegen.generated.types.*
 import hackathon.sprinter.member.model.Member
+import hackathon.sprinter.post.model.MockPost
 import hackathon.sprinter.post.model.Post
 import hackathon.sprinter.profile.model.OtherExperience
 import hackathon.sprinter.profile.model.Profile
@@ -15,6 +16,16 @@ fun Post.toGqlSchema(): PostResponse {
         start_date = this.startDate,
         end_date = this.endDate,
         owner = this.ownerMember?.toGqlSchema()
+    )
+}
+
+fun MockPost.toGqlSchema(): MockPostResponse {
+    return MockPostResponse(
+        email = this.email,
+        project_name = this.projectName,
+        link =  this.link,
+        image = this.image,
+        open_chat_link =  this.openChatLink
     )
 }
 
