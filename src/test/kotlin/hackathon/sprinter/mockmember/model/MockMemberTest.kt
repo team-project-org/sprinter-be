@@ -24,7 +24,6 @@ class MockMemberTest(
             job = "개발자",
             profileImageUrl = "testProfileImage",
             portfolioLinkPlainText = "https://ws-pace.tistory.com/, https://github.com/choiwoonsik"
-            plainLinkUrl = "https://ws-pace.tistory.com/, https://github.com/choiwoonsik"
         )
 
         // when
@@ -50,7 +49,6 @@ class MockMemberTest(
             job = "개발자",
             profileImageUrl = "testProfileImage",
             portfolioLinkPlainText = "https://ws-pace.tistory.com/, https://github.com/choiwoonsik"
-            plainLinkUrl = "https://ws-pace.tistory.com/, https://github.com/choiwoonsik"
         )
 
         // when
