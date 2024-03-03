@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile
 @RestController
 @Api(tags = ["MockPost"])
 @RequestMapping("/api/collections/mockposts")
-class McoPostControllerV2(
+class MockPostControllerV2(
     private val mockPostQueryService: MockPostQueryService,
     private val mockPostCommandService: MockPostCommandService,
 ) {
