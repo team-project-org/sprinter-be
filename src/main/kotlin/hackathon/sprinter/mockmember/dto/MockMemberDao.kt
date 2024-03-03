@@ -2,7 +2,7 @@ package hackathon.sprinter.mockmember.dto
 
 import hackathon.sprinter.util.MockBaseEntity
 
-data class MockMemberDAO(
+data class MockMemberDao(
     val email: String,
     val name: String,
     val job: String,

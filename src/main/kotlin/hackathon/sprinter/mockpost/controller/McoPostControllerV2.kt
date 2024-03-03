@@ -1,6 +1,6 @@
 package hackathon.sprinter.mockpost.controller
 
-import hackathon.sprinter.mockpost.model.MockPostModel
+import hackathon.sprinter.mockpost.model.MockPostDto
 import hackathon.sprinter.mockpost.service.MockPostCommandService
 import hackathon.sprinter.mockpost.service.MockPostQueryService
 import io.swagger.annotations.Api
@@ -23,14 +23,14 @@ class McoPostControllerV2(
     fun getPostList(
         @RequestParam("page") page: Int,
         @RequestParam("size") size: Int,
-    ): List<MockPostModel> {
+    ): List<MockPostDto> {
         return mockPostQueryService.findMockPostListByPaging(page, size)
     }
 
     @GetMapping("/records/{id}")
     fun getPostById(
         @PathVariable("id") id: String
-    ): MockPostModel {
+    ): MockPostDto {
         return mockPostQueryService.findMockPostById(id)
     }
 

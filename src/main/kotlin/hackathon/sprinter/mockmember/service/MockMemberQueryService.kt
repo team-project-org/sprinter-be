@@ -1,6 +1,6 @@
 package hackathon.sprinter.mockmember.service
 
-import hackathon.sprinter.mockmember.model.MockMember
+import hackathon.sprinter.mockmember.model.MockMemberDto
 import hackathon.sprinter.mockmember.repository.MockMemberRepositoryV2
 import org.springframework.stereotype.Service
 
@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service
 class MockMemberQueryService(
     private val mockMemberRepositoryV2: MockMemberRepositoryV2,
 ) {
-    fun getMockMemberListByPaging(page: Int, size: Int): List<MockMember> {
+    fun getMockMemberListByPaging(page: Int, size: Int): List<MockMemberDto> {
         return mockMemberRepositoryV2.findMockMemberList(page, size)
-            .map { dao -> MockMember.from(dao) }
+            .map { dao -> MockMemberDto.from(dao) }
     }
 
-    fun getMockMemberById(id: String): MockMember {
+    fun getMockMemberById(id: String): MockMemberDto {
         return mockMemberRepositoryV2.findMockMemberById(id)
-            .let { dao -> MockMember.from(dao)}
+            .let { dao -> MockMemberDto.from(dao)}
     }
 }

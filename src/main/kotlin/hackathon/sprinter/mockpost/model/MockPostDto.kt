@@ -1,8 +1,8 @@
 package hackathon.sprinter.mockpost.model
 
-import hackathon.sprinter.mockpost.dto.MockPostDAO
+import hackathon.sprinter.mockpost.dto.MockPostDao
 
-class MockPostModel(
+class MockPostDto(
     val email: String,
     val projectName: String,
     val link: String,
@@ -10,8 +10,8 @@ class MockPostModel(
     val openChatLink: String,
 ) {
     companion object {
-        fun from(dao: MockPostDAO): MockPostModel {
-            return MockPostModel(
+        fun from(dao: MockPostDao): MockPostDto {
+            return MockPostDto(
                 email = dao.email,
                 projectName = dao.projectName,
                 link = dao.link,

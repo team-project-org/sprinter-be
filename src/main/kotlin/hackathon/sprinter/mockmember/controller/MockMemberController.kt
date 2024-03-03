@@ -1,7 +1,7 @@
 package hackathon.sprinter.mockmember.controller
 
 import hackathon.sprinter.member.creator.MemberCreator
-import hackathon.sprinter.mockmember.model.MockMember
+import hackathon.sprinter.mockmember.model.MockMemberDto
 import hackathon.sprinter.mockmember.service.MockMemberQueryService
 import io.swagger.annotations.Api
 import org.springframework.web.bind.annotation.GetMapping
@@ -24,14 +24,14 @@ class MockMemberController(
     fun getMemberList(
         @RequestParam("page") page: Int,
         @RequestParam("size") size: Int,
-    ): List<MockMember> {
+    ): List<MockMemberDto> {
         return mockMemberQueryService.getMockMemberListByPaging(page, size)
     }
 
     @GetMapping("/records/{id}")
     fun getMemberById(
         @PathVariable("id") id: String,
-    ): MockMember {
+    ): MockMemberDto {
         return mockMemberQueryService.getMockMemberById(id)
     }
 

@@ -2,7 +2,7 @@ package hackathon.sprinter.mockmember.repository
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import hackathon.sprinter.mockmember.dto.MockMemberDAO
+import hackathon.sprinter.mockmember.dto.MockMemberDao
 import hackathon.sprinter.mockmember.dto.MockMemberInput
 import hackathon.sprinter.util.RestTemplateService
 import org.springframework.http.HttpMethod
@@ -17,7 +17,7 @@ class MockMemberRepositoryV2(
     fun findMockMemberList(
         page: Int,
         size: Int,
-    ): List<MockMemberDAO> {
+    ): List<MockMemberDao> {
         return restTemplateService.fetch(
             HttpMethod.GET,
             "/api/collections/mockmembers/records?page=$page&perPage=$size",
@@ -25,10 +25,10 @@ class MockMemberRepositoryV2(
             null,
             "",
         ).get("items").asJsonArray
-            .let { it.map { gson.fromJson(it, MockMemberDAO::class.java) } }
+            .let { it.map { gson.fromJson(it, MockMemberDao::class.java) } }
     }
 
-    fun findMockMemberById(id: String): MockMemberDAO {
+    fun findMockMemberById(id: String): MockMemberDao {
         return restTemplateService.fetch(
             HttpMethod.GET,
             "/api/collections/mockmembers/records?id=$id",
@@ -37,7 +37,7 @@ class MockMemberRepositoryV2(
             "",
         ).get("items").asJsonArray.firstOrNull()
             .let { it ?: throw NoSuchElementException("No such element with id: $id") }
-            .let { gson.fromJson(it, MockMemberDAO::class.java) }
+            .let { gson.fromJson(it, MockMemberDao::class.java) }
     }
 
     fun saveMockMember(mockMemberInput: MockMemberInput): String {

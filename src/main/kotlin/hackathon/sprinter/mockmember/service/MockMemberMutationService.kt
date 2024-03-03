@@ -4,7 +4,7 @@ import hackathon.sprinter.configure.DataNotFoundException
 import hackathon.sprinter.configure.dto.ErrorCode
 import hackathon.sprinter.member.repository.MemberRepository
 import hackathon.sprinter.mockmember.dto.MockMemberInput
-import hackathon.sprinter.mockmember.model.MockMember
+import hackathon.sprinter.mockmember.model.MockMemberDto
 import hackathon.sprinter.profile.repository.LinkJpaRepository
 import hackathon.sprinter.profile.repository.ProfileJpaRepository
 import org.springframework.stereotype.Service
@@ -18,7 +18,7 @@ class MockMemberMutationService(
 ) {
     @Transactional
     fun createMockMember(input: MockMemberInput): Long {
-        return MockMember
+        return MockMemberDto
             .from(input)
             .createRealMemberProfile()
             .also {

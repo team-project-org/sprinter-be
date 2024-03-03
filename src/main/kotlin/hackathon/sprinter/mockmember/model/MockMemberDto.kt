@@ -1,7 +1,7 @@
 package hackathon.sprinter.mockmember.model
 
 import hackathon.sprinter.member.model.Member
-import hackathon.sprinter.mockmember.dto.MockMemberDAO
+import hackathon.sprinter.mockmember.dto.MockMemberDao
 import hackathon.sprinter.mockmember.dto.MockMemberInput
 import hackathon.sprinter.profile.model.Link
 import hackathon.sprinter.profile.model.Profile
@@ -10,7 +10,7 @@ import hackathon.sprinter.util.Job
 import hackathon.sprinter.util.JobGroup
 import hackathon.sprinter.util.JobLevel
 
-class MockMember(
+class MockMemberDto(
     val email: String,
     val name: String,
     val job: String,
@@ -20,8 +20,8 @@ class MockMember(
     val portfolioLinkList: MutableList<String> = mutableListOf()
 
     companion object {
-        fun from(mockMemberInput: MockMemberInput): MockMember {
-            return MockMember(
+        fun from(mockMemberInput: MockMemberInput): MockMemberDto {
+            return MockMemberDto(
                 email = mockMemberInput.email,
                 name = mockMemberInput.name,
                 job = mockMemberInput.job,
@@ -30,12 +30,12 @@ class MockMember(
             )
         }
 
-        fun from(member: Member, linkList: List<Link>): MockMember {
+        fun from(member: Member, linkList: List<Link>): MockMemberDto {
             val email = member.username
             val profileName = member.profileName
             val profile = member.profile
 
-            return MockMember(
+            return MockMemberDto(
                 email = email,
                 name = profileName,
                 job = profile.job.name,
@@ -44,8 +44,8 @@ class MockMember(
             ).also { it.portfolioLinkList.addAll(linkList.map { it.url }) }
         }
 
-        fun from(input: MockMemberDAO): MockMember {
-            return MockMember(
+        fun from(input: MockMemberDao): MockMemberDto {
+            return MockMemberDto(
                 email = input.email,
                 name = input.name,
                 job = input.job,

@@ -9,7 +9,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import org.junit.jupiter.api.Test
 
-class MockMemberTest(
+class MockMemberDtoTest(
     private val memberJpaRepository: MemberJpaRepository,
     private val profileJpaRepository: ProfileJpaRepository,
     private val linkJpaRepository: LinkJpaRepository,
@@ -18,7 +18,7 @@ class MockMemberTest(
     @Test
     fun `인재 Mock form 정보를 받아서 프로필 엔티티를 생성한다`() {
         // given
-        val mockMember = MockMember(
+        val mockMemberDto = MockMemberDto(
             email = "test@test.com",
             name = "테스트계정",
             job = "개발자",
@@ -27,7 +27,7 @@ class MockMemberTest(
         )
 
         // when
-        val profile = mockMember.createRealMemberProfile()
+        val profile = mockMemberDto.createRealMemberProfile()
 
         // then
         profile.member shouldNotBe null
@@ -43,7 +43,7 @@ class MockMemberTest(
     @Test
     fun `인재 Mock form 정보로 생성한 프로필 엔티티를 저장한다`() {
         // given
-        val mockMember = MockMember(
+        val mockMemberDto = MockMemberDto(
             email = "test@test.com",
             name = "테스트계정",
             job = "개발자",
@@ -52,7 +52,7 @@ class MockMemberTest(
         )
 
         // when
-        val profile = mockMember.createRealMemberProfile()
+        val profile = mockMemberDto.createRealMemberProfile()
         val member = profile.member!!
         val linkList = profile.linkList
 
@@ -62,7 +62,7 @@ class MockMemberTest(
 
         // then
         val memberEntity = memberJpaRepository.findAll().first { it.profileName == "테스트계정" }
-        memberEntity.username shouldBe mockMember.email
+        memberEntity.username shouldBe mockMemberDto.email
         memberEntity.isMock shouldBe true
 
         val profileEntity = profileJpaRepository.findAll().first { it.member!!.id == memberEntity.id }
