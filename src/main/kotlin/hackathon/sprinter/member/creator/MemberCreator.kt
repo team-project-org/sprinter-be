@@ -5,9 +5,10 @@ import com.netflix.dgs.codegen.generated.types.UpdateProfileNameInput
 import hackathon.sprinter.configure.DataNotFoundException
 import hackathon.sprinter.configure.ParameterInvalidException
 import hackathon.sprinter.configure.dto.ErrorCode
-import hackathon.sprinter.member.dto.MockMemberInput
 import hackathon.sprinter.member.model.Member
 import hackathon.sprinter.member.repository.MemberRepository
+import hackathon.sprinter.mockmember.dto.MockMemberInput
+import hackathon.sprinter.mockmember.service.MockMemberCommandService
 import hackathon.sprinter.mockmember.service.MockMemberMutationService
 import hackathon.sprinter.util.CSVReader
 import hackathon.sprinter.util.RoleType
@@ -22,6 +23,7 @@ class MemberCreator(
     private val passwordEncoder: BCryptPasswordEncoder,
     private val memberRepository: MemberRepository,
     private val mockMemberMutationService: MockMemberMutationService,
+    private val mockMemberCommandService: MockMemberCommandService,
 ) {
     @Transactional
     fun updateProfileName(input: UpdateProfileNameInput): Long {
@@ -41,7 +43,7 @@ class MemberCreator(
     }
 
     @Transactional
-    fun createMockMemberList(csv: MultipartFile): List<Long> {
+    fun createMockMemberList(csv: MultipartFile): List<String> {
         val reader = CSVReader(csv.inputStream.reader())
         val input = reader
             .readMultiColumn(
@@ -57,10 +59,11 @@ class MemberCreator(
         return input.map { createMockMember(it) }
     }
 
-    fun createMockMember(input: MockMemberInput): Long {
+    fun createMockMember(input: MockMemberInput): String {
         validateMock(input)
 
-        return mockMemberMutationService.createMockMember(input)
+//        return mockMemberMutationService.createMockMember(input)
+        return mockMemberCommandService.createMockMember(input)
     }
 
     private fun validateMock(input: MockMemberInput) {

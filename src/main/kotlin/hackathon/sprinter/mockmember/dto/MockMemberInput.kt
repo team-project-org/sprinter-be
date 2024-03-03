@@ -1,4 +1,4 @@
-package hackathon.sprinter.member.dto
+package hackathon.sprinter.mockmember.dto
 
 class MockMemberInput(
     val email: String,
@@ -6,5 +6,4 @@ class MockMemberInput(
     val job: String,
     val profileImageUrl: String,
     val portfolioLinkPlainText: String,
-) {
-}
+)

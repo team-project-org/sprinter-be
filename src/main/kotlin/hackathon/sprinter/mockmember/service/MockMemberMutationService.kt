@@ -2,8 +2,8 @@ package hackathon.sprinter.mockmember.service
 
 import hackathon.sprinter.configure.DataNotFoundException
 import hackathon.sprinter.configure.dto.ErrorCode
-import hackathon.sprinter.member.dto.MockMemberInput
 import hackathon.sprinter.member.repository.MemberRepository
+import hackathon.sprinter.mockmember.dto.MockMemberInput
 import hackathon.sprinter.mockmember.model.MockMember
 import hackathon.sprinter.profile.repository.LinkJpaRepository
 import hackathon.sprinter.profile.repository.ProfileJpaRepository

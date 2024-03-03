@@ -1,7 +1,8 @@
 package hackathon.sprinter.mockmember.model
 
-import hackathon.sprinter.member.dto.MockMemberInput
 import hackathon.sprinter.member.model.Member
+import hackathon.sprinter.mockmember.dto.MockMemberDAO
+import hackathon.sprinter.mockmember.dto.MockMemberInput
 import hackathon.sprinter.profile.model.Link
 import hackathon.sprinter.profile.model.Profile
 import hackathon.sprinter.util.AffiliationType
@@ -28,6 +29,7 @@ class MockMember(
                 portfolioLinkPlainText = mockMemberInput.portfolioLinkPlainText,
             )
         }
+
         fun from(member: Member, linkList: List<Link>): MockMember {
             val email = member.username
             val profileName = member.profileName
@@ -40,6 +42,16 @@ class MockMember(
                 profileImageUrl = profile.profileImageUrl ?: "",
                 portfolioLinkPlainText = null,
             ).also { it.portfolioLinkList.addAll(linkList.map { it.url }) }
+        }
+
+        fun from(input: MockMemberDAO): MockMember {
+            return MockMember(
+                email = input.email,
+                name = input.name,
+                job = input.job,
+                profileImageUrl = input.profileImageUrl,
+                portfolioLinkPlainText = input.portfolioLinkPlainText,
+            )
         }
     }
 
