@@ -1,5 +1,6 @@
 scalar Long
 scalar DateTime
+scalar Object
 
 schema {
     query: Query
@@ -38,6 +39,9 @@ type Query {
 
     """ Mock 회원 목록 조회 """
     getMockPostList:MockPostResponseList!
+
+    """노션 페이지 정보 조회"""
+    getNotionPage(notion_url: String!): Object!
 }
 
 type MemberList {
