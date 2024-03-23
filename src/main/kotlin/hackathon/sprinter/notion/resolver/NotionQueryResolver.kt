@@ -1,4 +1,4 @@
-package hackathon.sprinter.notion.controller
+package hackathon.sprinter.notion.resolver
 
 import com.netflix.graphql.dgs.DgsComponent
 import com.netflix.graphql.dgs.DgsQuery

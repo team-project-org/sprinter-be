@@ -42,6 +42,9 @@ type Query {
 
     """노션 페이지 정보 조회"""
     getNotionPage(notion_url: String!): Object!
+
+    """깃허브 페이지 HTML 조회"""
+    getGithubPageHTML(username: String!): Object!
 }
 
 type MemberList {
