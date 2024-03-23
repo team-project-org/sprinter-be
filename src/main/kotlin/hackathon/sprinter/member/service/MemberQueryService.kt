@@ -6,7 +6,7 @@ import hackathon.sprinter.configure.DataNotFoundException
 import hackathon.sprinter.configure.dto.ErrorCode.ITEM_NOT_EXIST
 import hackathon.sprinter.member.model.Member
 import hackathon.sprinter.member.repository.MemberRepository
-import hackathon.sprinter.mockmember.model.MockMember
+import hackathon.sprinter.mockmember.model.MockMemberDto
 import hackathon.sprinter.profile.repository.mysql.LinkRepository
 import hackathon.sprinter.util.toGqlSchema
 import org.springframework.stereotype.Service
@@ -51,7 +51,7 @@ class MemberQueryService(
     }
 
     @Transactional(readOnly = true)
-    fun getMockMemberList(): List<MockMember> {
+    fun getMockMemberList(): List<MockMemberDto> {
         val mockMemberList = memberRepository.findMockMember()
         val profileIdList = mockMemberList.map { it.profile.id }
 
@@ -61,7 +61,7 @@ class MemberQueryService(
 
         return mockMemberList.map {
             val linkList = profileLinkListMap[it.profile.id] ?: emptyList()
-            MockMember.from(
+            MockMemberDto.from(
                 member = it,
                 linkList = linkList
             )

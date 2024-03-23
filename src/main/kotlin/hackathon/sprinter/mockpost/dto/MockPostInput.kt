@@ -1,4 +1,4 @@
-package hackathon.sprinter.post.dto
+package hackathon.sprinter.mockpost.dto
 
 class MockPostInput(
     val email: String,

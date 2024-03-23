@@ -1,7 +1,7 @@
 package hackathon.sprinter.post.service
 
 import hackathon.sprinter.member.service.MemberQueryService
-import hackathon.sprinter.post.dto.MockPostInput
+import hackathon.sprinter.mockpost.dto.MockPostInput
 import hackathon.sprinter.post.model.MemberPost
 import hackathon.sprinter.post.model.MockPost
 import hackathon.sprinter.post.model.Post
