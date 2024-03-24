@@ -45,6 +45,9 @@ type Query {
 
     """깃허브 페이지 HTML 조회"""
     getGithubPageHTML(username: String!): Object!
+
+    """링크드인 페이지 HTML 조회"""
+    getLinkedInHtml(linkedIn_url: String!): String!
 }
 
 type MemberList {
