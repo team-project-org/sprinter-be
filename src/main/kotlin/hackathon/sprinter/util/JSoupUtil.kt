@@ -12,7 +12,3 @@ fun getHTMLFromGithubUrl(url: String): String {
 //    return document
 //    return document.getElementsByClass("application-main").toString()
 }
-
-fun getLinkedInFromLinkedInUrl(url: String): Any {
-    return Jsoup.connect(url)
-}
