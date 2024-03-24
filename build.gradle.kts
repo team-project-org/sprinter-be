@@ -89,6 +89,9 @@ dependencies {
 
     // JSOUP
     implementation("org.jsoup:jsoup:1.17.2")
+
+    //selenium
+    implementation ("org.seleniumhq.selenium:selenium-java:4.6.0")
 }
 
 tasks.withType<KotlinCompile> {
