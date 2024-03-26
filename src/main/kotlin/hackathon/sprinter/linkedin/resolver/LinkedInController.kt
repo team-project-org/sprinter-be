@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam
 class LinkedInController(
     private val linkedInQueryService: LinkedInQueryService
 ) {
-    @GetMapping
+    @GetMapping("/linkedIn")
     fun getLinkedInHTML(@RequestParam url: String): String {
         return linkedInQueryService.getLinkedInHTML(url)
     }

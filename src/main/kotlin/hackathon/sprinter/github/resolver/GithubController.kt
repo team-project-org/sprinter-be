@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 class GithubController(
     private val githubQueryService: GithubQueryService
 ) {
-    @GetMapping("/test")
+    @GetMapping("/github")
     fun getGithubPage(@RequestParam username: String) : Any {
         return githubQueryService.getGithubPageHTML(username);
     }
