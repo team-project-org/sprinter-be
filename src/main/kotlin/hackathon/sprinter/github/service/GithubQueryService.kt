@@ -1,15 +1,15 @@
 package hackathon.sprinter.github.service
 
-import hackathon.sprinter.github.repository.GithubCacheRepository
 import hackathon.sprinter.util.getHTMLFromGithubUrl
+import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDateTime
+import java.time.Duration
 
 @Service
 @Transactional(readOnly = true)
 class GithubQueryService(
-    private val githubCacheRepository: GithubCacheRepository
+    private val redisTemplate: RedisTemplate<String, String>
 ) {
 
     companion object {
@@ -18,15 +18,15 @@ class GithubQueryService(
 
     @Transactional
     fun getGithubPageHTML(username: String): String {
-        val githubCache = githubCacheRepository.findByUsername(username)
-        githubCache?.let {
-            val yesterday = LocalDateTime.now().minusDays(1)
+        val githubProfileUrl = GITHUB_PAGE.plus(username)
+        val opsForValue = redisTemplate.opsForValue()
+        opsForValue.get(githubProfileUrl)
+            ?.let { return it }
 
-            if (yesterday.isBefore(it.dateUpdated)) {
-                it.updateHtml(getHTMLFromGithubUrl(GITHUB_PAGE.plus(username)))
+        getHTMLFromGithubUrl(githubProfileUrl)
+            .let {
+                opsForValue.set(githubProfileUrl, it, Duration.ofDays(1))
+                return it
             }
-            return it.html
-        }
-        return getHTMLFromGithubUrl(GITHUB_PAGE.plus(username))
     }
 }

@@ -92,6 +92,9 @@ dependencies {
 
     //selenium
     implementation ("org.seleniumhq.selenium:selenium-java:4.6.0")
+
+    //redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
 }
 
 tasks.withType<KotlinCompile> {
