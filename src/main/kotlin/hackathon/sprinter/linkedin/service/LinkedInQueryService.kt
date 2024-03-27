@@ -26,11 +26,12 @@ class LinkedInQueryService(
     private lateinit var password: String
 
     fun getLinkedInHTML(linkedInUrl: String): String {
-        val webDriver = webDriverUtil.getWebDriver()
 
         val opsForValue = redisTemplate.opsForValue()
         opsForValue.get(linkedInUrl)
             ?.let { return it }
+
+        val webDriver = webDriverUtil.getWebDriver()
 
         loginLinkedIn(webDriver)
         webDriver.get(linkedInUrl)
@@ -38,6 +39,7 @@ class LinkedInQueryService(
         webDriver.pageSource
             .let {
                 opsForValue.set(linkedInUrl, it, Duration.ofDays(1))
+                webDriver.close()
                 return it
             }
     }
