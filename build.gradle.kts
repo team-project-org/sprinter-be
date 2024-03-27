@@ -86,6 +86,15 @@ dependencies {
     // TEST
     testImplementation("io.kotest:kotest-runner-junit5:4.6.3")
     testImplementation("io.kotest:kotest-assertions-core:4.6.3")
+
+    // JSOUP
+    implementation("org.jsoup:jsoup:1.17.2")
+
+    //selenium
+    implementation ("org.seleniumhq.selenium:selenium-java:4.6.0")
+
+    //redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
 }
 
 tasks.withType<KotlinCompile> {
