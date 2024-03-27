@@ -3,19 +3,19 @@ package hackathon.sprinter.util
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.util.ObjectUtils
 import java.time.Duration
 
 @Component
 class WebDriverUtil {
-    companion object {
-        private var WEB_DRIVER_PATH: String = "/Users/choi_keunyoung/IdeaProjects/sprinter-be/src/main/resources/chromedriver"
-    }
+    @Value("\${web.driver.path}")
+    private lateinit var webDriverPath : String
 
     fun getWebDriver(): WebDriver {
         if (ObjectUtils.isEmpty(System.getProperty("webdriver.chrome.driver"))) {
-            System.setProperty("webdriver.chrome.driver", WEB_DRIVER_PATH)
+            System.setProperty("webdriver.chrome.driver", webDriverPath)
         }
         val chromeOptions = ChromeOptions()
         chromeOptions.setHeadless(true)
